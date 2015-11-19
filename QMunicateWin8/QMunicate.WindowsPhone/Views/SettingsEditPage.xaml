@@ -1,0 +1,54 @@
+﻿<Page
+    x:Class="QMunicate.Views.SettingsEditPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QMunicate.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:behaviors="using:QMunicate.Behaviors"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    RequestedTheme="Light"
+    DataContext="{Binding SettingsEditViewModel, Source={StaticResource Locator}}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="EDIT" Margin="{StaticResource DefaultMargin}" FontSize="{StaticResource NormalFontSize}"/>
+        <Image Grid.Row="1" Grid.Column="0" Source="{Binding UserImage, TargetNullValue=../Assets/AvatarPlaceholder.png}" Height="90" Width="90" Margin="{StaticResource DefaultMargin}"/>
+        <Button Grid.Row="1" Grid.Column="1" Content="change picture" Command="{Binding ChangeImageCommand}"/>
+        <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="{StaticResource DefaultMargin}" IsReadOnly="{Binding IsLoading}">
+            <TextBox.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="User name" Foreground="Gray"/>
+                </DataTemplate>
+            </TextBox.HeaderTemplate>
+        </TextBox>
+    </Grid>
+
+    <interactivity:Interaction.Behaviors>
+        <behaviors:StatusBarBehavior IsLoading="{Binding IsLoading}"/>
+    </interactivity:Interaction.Behaviors>
+    <Page.BottomAppBar>
+        <CommandBar Background="{StaticResource AppBarBrush}">
+            <AppBarButton Label="save" Command="{Binding SaveCommand}">
+                <AppBarButton.Icon>
+                    <SymbolIcon Symbol="Accept" Foreground="White"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton Label="cancel" Command="{Binding CancelCommand}">
+                <AppBarButton.Icon>
+                    <SymbolIcon Symbol="Cancel" Foreground="White"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>

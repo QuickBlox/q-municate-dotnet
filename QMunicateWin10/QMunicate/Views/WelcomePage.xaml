@@ -1,0 +1,29 @@
+﻿<Page
+    x:Class="QMunicate.Views.WelcomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QMunicate.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    RequestedTheme="Light"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    DataContext="{Binding WelcomeViewModel, Source={StaticResource ViewModelLocator}}">
+    
+    <Page.Resources>
+        <Color x:Key="FacebookColor">#3b5996</Color>
+        <SolidColorBrush x:Key="FacebookBrush" Color="{StaticResource FacebookColor}"  />
+    </Page.Resources>
+
+    <StackPanel>
+        <Image Source="../Assets/app_logo.png" Height="150" HorizontalAlignment="Center"/>
+        <Image Source="../Assets/title.png" Height="100" HorizontalAlignment="Center" Margin="{StaticResource DefaultMargin}"/>
+        <Button Content="Connect with Facebook" Command="{Binding FacebookSignUpCommand}" Margin="{StaticResource DefaultMargin}"
+                Foreground="White" FontWeight="Bold" BorderThickness="0" Background="{StaticResource FacebookBrush}" Width="300" Height="50" HorizontalAlignment="Center"/>
+        <Button Content="Sign up with email" Command="{Binding EmailSignUpCommand}" Margin="{StaticResource DefaultMargin}"
+                FontWeight="Bold" Foreground="DimGray" BorderThickness="0" Width="300" Height="50" HorizontalAlignment="Center"/>
+        <HyperlinkButton Content="Already have an account?" Command="{Binding LoginCommand}" Foreground="Gray" FontWeight="SemiBold"
+                             FontSize="{StaticResource NormalFontSize}" Margin="0 20 0 0" HorizontalAlignment="Center" />
+        <TextBlock Text="{Binding CopyrightString}" Foreground="Gray" FontSize="{StaticResource SmallFontSize}" Margin="{StaticResource DefaultMargin}" HorizontalAlignment="Center"/>
+    </StackPanel>
+</Page>

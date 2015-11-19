@@ -1,0 +1,80 @@
+﻿<Page
+    x:Class="QMunicate.Views.SearchPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QMunicate.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:behaviors="using:QMunicate.Behaviors"
+    xmlns:controls="using:QMunicate.Controls"
+    xmlns:tapListener="using:QMunicate.Core.TapListener"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    RequestedTheme="Light"
+    DataContext="{Binding SearchViewModel, Source={StaticResource Locator}}"
+    x:Name="Page">
+    
+    <Page.Resources>
+        <x:String x:Key="LocalLabel">local</x:String>
+        <x:String x:Key="GlobalLabel">global</x:String>
+        
+        <DataTemplate x:Key="LocalUserTemplate">
+            <StackPanel Orientation="Horizontal" tapListener:TapListener.TapCommand="{Binding DataContext.OpenLocalCommand, ElementName=Page}"
+                              tapListener:TapListener.TapCommandParameter="{Binding }">
+                <Image Source="{Binding Image, TargetNullValue=../Assets/AvatarPlaceholder.png}" Width="55" Height="55" Margin="0 0 12 0"/>
+                <controls:SelectionsTextBlock Text="{Binding FullName}" SelectionText="{Binding Text, ElementName=SearchTextBox}" SelectionColor="DodgerBlue"
+                                              FontSize="{StaticResource NormalFontSize}" VerticalAlignment="Center"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="GlobalUserTemplate">
+            <StackPanel Orientation="Horizontal" tapListener:TapListener.TapCommand="{Binding DataContext.OpenGlobalCommand, ElementName=Page}"
+                              tapListener:TapListener.TapCommandParameter="{Binding }">
+                <Image Source="{Binding Image, TargetNullValue=../Assets/AvatarPlaceholder.png}" Width="55" Height="55" Margin="0 0 12 0"/>
+                <controls:SelectionsTextBlock Text="{Binding FullName}" SelectionText="{Binding Text, ElementName=SearchTextBox}" SelectionColor="DodgerBlue"
+                                              FontSize="{StaticResource NormalFontSize}" VerticalAlignment="Center"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <Style x:Key="ListViewItemContainerStyle" TargetType="ListViewItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <ContentPresenter Margin="0 0 0 12"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBox x:Name="SearchTextBox" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="{StaticResource DefaultMargin}"/>
+        <Pivot x:Name="Pivot" Grid.Row="1" SelectionChanged="Pivot_OnSelectionChanged">
+            <Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" FontSize="{StaticResource ExtraLargeFontSize}"/>
+                </DataTemplate>
+            </Pivot.HeaderTemplate>
+            <PivotItem Header="{StaticResource LocalLabel}">
+                <ListView ItemsSource="{Binding LocalResults}" Background="Transparent" ItemContainerStyle="{StaticResource ListViewItemContainerStyle}"
+                         ItemTemplate="{StaticResource LocalUserTemplate}" />
+            </PivotItem>
+            <PivotItem Header="{StaticResource GlobalLabel}">
+                <ListView ItemsSource="{Binding GlobalResults}" Background="Transparent" ItemContainerStyle="{StaticResource ListViewItemContainerStyle}"
+                         ItemTemplate="{StaticResource GlobalUserTemplate}">
+                    <interactivity:Interaction.Behaviors>
+                        <behaviors:ListViewIncrementalLoadingBehavior LoadCommand="{Binding LoadMoreGlobalResultsCommand}" />
+                    </interactivity:Interaction.Behaviors>
+                </ListView>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+
+    <interactivity:Interaction.Behaviors>
+        <behaviors:StatusBarBehavior IsLoading="{Binding IsLoading}"/>
+    </interactivity:Interaction.Behaviors>
+</Page>

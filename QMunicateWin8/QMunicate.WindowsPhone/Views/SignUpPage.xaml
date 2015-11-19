@@ -1,0 +1,48 @@
+﻿<Page
+    x:Class="QMunicate.Views.SignUpPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QMunicate.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:QMunicate.Controls"
+    xmlns:system="using:System"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:behaviors="using:QMunicate.Behaviors"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    RequestedTheme="Light"
+    DataContext="{Binding SignUpViewModel, Source={StaticResource Locator}}">
+    
+    <Grid>
+        <StackPanel>
+            <TextBlock Text="Sign up" FontSize="{StaticResource ExtraLargeFontSize}" Margin="{StaticResource DefaultMargin}" />
+            <TextBox PlaceholderText="Full Name" Margin="{StaticResource DefaultMargin}" Text="{Binding FullName, Mode=TwoWay}" IsEnabled="{Binding IsLoading, Converter={StaticResource BooleanToNegationConverter}}" />
+            <TextBox PlaceholderText="Email" Margin="{StaticResource DefaultMargin}" Text="{Binding Email,Mode=TwoWay}" IsEnabled="{Binding IsLoading, Converter={StaticResource BooleanToNegationConverter}}" />
+            <PasswordBox PlaceholderText="Password" Margin="{StaticResource DefaultMargin}" Password="{Binding Password,Mode=TwoWay}" IsEnabled="{Binding IsLoading, Converter={StaticResource BooleanToNegationConverter}}" />
+            <StackPanel Orientation="Horizontal">
+                <Image DoubleTapped="UIElement_OnDoubleTapped" Height="100" Width="100" Source="{Binding UserImage, TargetNullValue=../Assets/AvatarPlaceholder.png, FallbackValue=../Assets/AvatarPlaceholder.png}" Margin="{StaticResource DefaultMargin}" />
+                <Button Content="choose user picture" Margin="{StaticResource DefaultMargin}" Command="{Binding ChoosePhotoCommand}"/>
+            </StackPanel>
+            <TextBlock Text="By clicking Done, you agree" FontSize="{StaticResource SmallFontSize}" Margin="{StaticResource DefaultHorizontalMargin}"/>
+            <StackPanel Orientation="Horizontal" Margin="{StaticResource DefaultHorizontalMargin}">
+                <TextBlock Text="to Q-municate" FontSize="{StaticResource SmallFontSize}" VerticalAlignment="Center"/>
+                <HyperlinkButton Content="User Agreement" NavigateUri="http://q-municate.com/agreement/" FontSize="{StaticResource SmallFontSize}" Foreground="Blue" Margin="6 0 0 0"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+
+    <interactivity:Interaction.Behaviors>
+        <behaviors:StatusBarBehavior IsLoading="{Binding IsLoading}"/>
+    </interactivity:Interaction.Behaviors>
+
+    <Page.BottomAppBar>
+        <CommandBar Background="{StaticResource AppBarBrush}">
+            <AppBarButton Label="Done" Command="{Binding SignUpCommand}">
+                <AppBarButton.Icon>
+                    <SymbolIcon Symbol="Accept" Foreground="White"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>

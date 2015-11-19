@@ -1,0 +1,329 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{6CF22D49-44A2-433F-B41B-66F5534CC1D1}</ProjectGuid>
+    <OutputType>AppContainerExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>QMunicate</RootNamespace>
+    <AssemblyName>QMunicate</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PackageCertificateKeyFile>QMunicate_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxPackageDir>D:\UwpQmunicateBuilds</AppxPackageDir>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>arm</AppxBundlePlatforms>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Controls\RadTextBox.cs">
+      <Link>Controls\RadTextBox.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Controls\SelectionsTextBlock.cs">
+      <Link>Controls\SelectionsTextBlock.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Controls\TypingIndicator.cs">
+      <Link>Controls\TypingIndicator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Controls\ValidationState.cs">
+      <Link>Controls\ValidationState.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Converters\BooleanToNegationConverter.cs">
+      <Link>Converters\BooleanToNegationConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Converters\BooleanToOpacityConverter.cs">
+      <Link>Converters\BooleanToOpacityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Converters\BooleanToVisibilityConverter.cs">
+      <Link>Converters\BooleanToVisibilityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Converters\HandyDateConverter.cs">
+      <Link>Converters\HandyDateConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Converters\IntToVisibilityConverter.cs">
+      <Link>Converters\IntToVisibilityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Converters\NullToVisibilityConverter.cs">
+      <Link>Converters\NullToVisibilityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Converters\StringFormatConverter.cs">
+      <Link>Converters\StringFormatConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Helper\Helpers.cs">
+      <Link>Helper\Helpers.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Helper\ImageHelper.cs">
+      <Link>Helper\ImageHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Logger\FileLogger.cs">
+      <Link>Logger\FileLogger.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Models\ChatNavigationParameter.cs">
+      <Link>Models\ChatNavigationParameter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Models\DialogsNavigationParameter.cs">
+      <Link>Models\DialogsNavigationParameter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Selectors\MessageTemplateSelector.cs">
+      <Link>Selectors\MessageTemplateSelector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Services\CachingQuickbloxClient.cs">
+      <Link>Services\CachingQuickbloxClient.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Services\DialogsManager.cs">
+      <Link>Services\DialogsManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Services\FileStorage.cs">
+      <Link>Services\FileStorage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Services\ImagesService.cs">
+      <Link>Services\ImagesService.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QMunicateWin8\QMunicate.Shared\Services\PushNotificationsManager.cs">
+      <Link>Services\PushNotificationsManager.cs</Link>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationKeys.cs" />
+    <Compile Include="Behaviors\ListViewIncrementalLoadingBehavior.cs" />
+    <Compile Include="ContentViewLocator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingsKeys.cs" />
+    <Compile Include="SettingsManager.cs" />
+    <Compile Include="ViewModels\DialogsAndSearchViewModel.cs" />
+    <Compile Include="ViewModels\DialogsViewModel.cs" />
+    <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\PartialViewModels\DayOfMessages.cs" />
+    <Compile Include="ViewModels\PartialViewModels\DialogViewModel.cs" />
+    <Compile Include="ViewModels\PartialViewModels\MessageCollectionViewModel.cs" />
+    <Compile Include="ViewModels\PartialViewModels\MessageViewModel.cs" />
+    <Compile Include="ViewModels\PartialViewModels\SelectableListBoxItem.cs" />
+    <Compile Include="ViewModels\PartialViewModels\UserViewModel.cs" />
+    <Compile Include="ViewModels\PrivateChatViewModel.cs" />
+    <Compile Include="ViewModels\SearchViewModel.cs" />
+    <Compile Include="ViewModels\SignUpViewModel.cs" />
+    <Compile Include="ViewModels\ViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="ViewModels\WelcomeViewModel.cs" />
+    <Compile Include="ViewLocator.cs" />
+    <Compile Include="Views\ContentViews\NamespaceDoc.cs" />
+    <Compile Include="Views\PaneViews\DialogsAndSearchControl.xaml.cs">
+      <DependentUpon>DialogsAndSearchControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PaneViews\DialogsControl.xaml.cs">
+      <DependentUpon>DialogsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ForgotPasswordPage.xaml.cs">
+      <DependentUpon>ForgotPasswordPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ContentViews\PrivateChatPage.xaml.cs">
+      <DependentUpon>PrivateChatPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PaneViews\NamespaceDoc.cs" />
+    <Compile Include="Views\PaneViews\SearchControl.xaml.cs">
+      <DependentUpon>SearchControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SignUpPage.xaml.cs">
+      <DependentUpon>SignUpPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WelcomePage.xaml.cs">
+      <DependentUpon>WelcomePage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+    <None Include="QMunicate_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\app_logo.png" />
+    <Content Include="Assets\AvatarPlaceholder.png" />
+    <Content Include="Assets\grey_arrow_left.png" />
+    <Content Include="Assets\Icons\ic_new_group.png" />
+    <Content Include="Assets\Icons\ic_send.png" />
+    <Content Include="Assets\Icons\ic_settings.png" />
+    <Content Include="Assets\title.png" />
+    <Content Include="Properties\Default.rd.xml" />
+    <Content Include="Assets\LockScreenLogo.scale-200.png" />
+    <Content Include="Assets\SplashScreen.scale-200.png" />
+    <Content Include="Assets\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="Themes\ContentButtonStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\MessageTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\SelectionsTextBlock.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PaneViews\DialogsAndSearchControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PaneViews\DialogsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ForgotPasswordPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LoginPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ContentViews\PrivateChatPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PaneViews\SearchControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SignUpPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\WelcomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\QMunicate.Core\QMunicate.Core.csproj">
+      <Project>{b2b5054e-5424-4424-87b7-e6177069f242}</Project>
+      <Name>QMunicate.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
+      <Name>Behaviors SDK %28XAML%29</Name>
+    </SDKReference>
+    <SDKReference Include="WindowsMobile, Version=10.0.10240.0">
+      <Name>Windows Mobile Extensions for the UWP</Name>
+    </SDKReference>
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

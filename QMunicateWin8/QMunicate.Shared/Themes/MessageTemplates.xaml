@@ -1,0 +1,103 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:selectors="using:QMunicate.Selectors">
+
+    <Thickness x:Key="DefaultMessageMargin">12 6 12 6</Thickness>
+    <SolidColorBrush x:Key="IncomingMessageBrush" Color="LightGray"/>
+    <SolidColorBrush x:Key="OutogoingMessageBrush" Color="{StaticResource AppBarColor}"/>
+
+    <DataTemplate x:Key="MessagesGroupDateHeader">
+        <Border BorderThickness="1" BorderBrush="Gray"  Margin="{StaticResource DefaultMessageMargin}" HorizontalAlignment="Center">
+            <TextBlock Text="{Binding Date, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:MMMM d}'}"
+                        FontSize="{StaticResource NormalFontSize}" HorizontalAlignment="Center" Foreground="Gray" Margin="{StaticResource DefaultMessageMargin}" />
+        </Border>
+    </DataTemplate>
+
+    <Style TargetType="ListViewItem" x:Key="ListViewItemStrechedStyle">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    </Style>
+
+    <Style TargetType="ListViewHeaderItem" x:Key="ListViewHeaderItemStrechedStyle">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    </Style>
+
+    <DataTemplate x:Key="NotificationMessageTemplate">
+        <Grid Margin="{StaticResource DefaultVerticalMargin}">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="{Binding DateTime, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:HH:mm}'}" 
+                       Foreground="Black" Margin="{StaticResource DefaultHorizontalMargin}" FontSize="{StaticResource NormalFontSize}" HorizontalAlignment="Center"/>
+            <TextBlock Grid.Row="1" Text="{Binding MessageText}" FontSize="{StaticResource NormalFontSize}" TextWrapping="Wrap" TextAlignment="Center"
+                       Foreground="DimGray" Margin="12 12 12 0" HorizontalAlignment="Center"/>
+        </Grid>
+    </DataTemplate>
+    
+    <DataTemplate x:Key="IncomingMessageTemlate">
+        <Grid Margin="{StaticResource DefaultVerticalMargin}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Polygon Points="12,0 12,12 0,12 12,0" Fill="{StaticResource IncomingMessageBrush}" VerticalAlignment="Bottom"
+                                 Margin="0,24,0,0" />
+            <Grid Grid.Column="1" Background="{StaticResource IncomingMessageBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding MessageText}" TextWrapping="Wrap" Foreground="Black" Margin="{StaticResource DefaultMessageMargin}" FontSize="{StaticResource NormalFontSize}"/>
+                <TextBlock Grid.Row="1" Text="{Binding DateTime, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:HH:mm}'}"
+                                       FontSize="{StaticResource NormalFontSize}" Foreground="Gray" Margin="{StaticResource DefaultMessageMargin}" HorizontalAlignment="Right"/>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="IncomingGroupMessageTemlate">
+        <Grid Margin="{StaticResource DefaultVerticalMargin}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Polygon Points="12,0 12,12 0,12 12,0" Fill="{StaticResource IncomingMessageBrush}" VerticalAlignment="Bottom"
+                                 Margin="0,24,0,0" />
+            <Grid Grid.Column="1" Background="{StaticResource IncomingMessageBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding SenderName}" Foreground="Gray" Margin="12 6 12 0" FontSize="{StaticResource NormalFontSize}"/>
+                <TextBlock Grid.Row="1" Text="{Binding MessageText}" TextWrapping="Wrap" Foreground="Black" Margin="{StaticResource DefaultMessageMargin}" FontSize="{StaticResource NormalFontSize}"/>
+                <TextBlock Grid.Row="2" Text="{Binding DateTime, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:HH:mm}'}"
+                                       FontSize="{StaticResource NormalFontSize}" Foreground="Gray" Margin="{StaticResource DefaultMessageMargin}" HorizontalAlignment="Right"/>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="OutgoingMessageTemplate">
+        <Grid Margin="{StaticResource DefaultVerticalMargin}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="1" Background="{StaticResource OutogoingMessageBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding MessageText}" TextWrapping="Wrap" Foreground="White" Margin="{StaticResource DefaultMessageMargin}" FontSize="{StaticResource NormalFontSize}"/>
+                <TextBlock Grid.Row="1" Text="{Binding DateTime, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:HH:mm}'}"
+                                       FontSize="{StaticResource NormalFontSize}" Foreground="Gainsboro" Margin="{StaticResource DefaultMessageMargin}" HorizontalAlignment="Right"/>
+            </Grid>
+            <Polygon Points="0,0 0,12 12,12 0,0" Fill="{StaticResource OutogoingMessageBrush}"
+                                 VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="2"/>
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>

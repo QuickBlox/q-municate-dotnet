@@ -1,0 +1,22 @@
+﻿<Page
+    x:Class="QMunicate.Views.SendRequestPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QMunicate.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    RequestedTheme="Light"
+    DataContext="{Binding SendRequestViewModel, Source={StaticResource Locator}}">
+
+    <Grid>
+        <StackPanel Margin="{StaticResource DefaultMargin}">
+            <TextBlock Text="{Binding UserName}" FontSize="{StaticResource LargeFontSize}" Margin="{StaticResource DefaultMargin}"/>
+            <Image Source="{Binding UserImage, TargetNullValue=../Assets/AvatarPlaceholder.png}" Width="140" Height="140" Margin="{StaticResource DefaultMargin}" HorizontalAlignment="Left"/>
+            <Button Content="send contact request" Margin="{StaticResource DefaultMargin}" Command="{Binding SendCommand}"/>
+            <TextBlock Text="The user is already in your contact list." FontSize="{StaticResource NormalFontSize}" Margin="{StaticResource DefaultMargin}"
+                       Visibility="{Binding IsAdded, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </StackPanel>
+    </Grid>
+</Page>

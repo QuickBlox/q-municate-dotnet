@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>ba7acff7-a9db-46a4-a6b8-9089128dc102</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>QMunicate</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ApplicationKeys.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ContinuationManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\RadTextBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\SelectionsTextBlock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\TypingIndicator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\ValidationState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanToNegationConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanToOpacityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\HandyDateConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\IntToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\StringFormatConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helper\Helpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helper\ImageHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logger\FileLogger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ChatNavigationParameter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DialogsNavigationParameter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Selectors\MessageTemplateSelector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\CachingQuickbloxClient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DialogsManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\FileStorage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\ImagesService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\PushNotificationsManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SettingsKeys.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SettingsManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewLocator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\DialogsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PartialViewModels\DayOfMessages.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PartialViewModels\DialogViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PartialViewModels\MessageCollectionViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PartialViewModels\MessageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PartialViewModels\SelectableListBoxItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PartialViewModels\UserViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PrivateChatViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\FirstViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ForgotPasswordViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\GroupAddMemberViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\GroupChatViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\GroupEditViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\GroupInfoViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LoginViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\NewMessageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SearchViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SendRequestViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SettingsEditViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SettingsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SignUpViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\UserInfoViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewModelLocator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Assets\AvatarPlaceholder.png" />
+    <Content Include="$(MSBuildThisFileDirectory)FacebookConfig.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)Themes\MessageTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Themes\TypingIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Themes\ContentButtonStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Themes\SelectionsTextBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Themes\RadTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+</Project>
