@@ -65,7 +65,6 @@ namespace QMunicate.ViewModels
             var sessionResponse = await QuickbloxClient.AuthenticationClient.CreateSessionWithSocialNetworkKey("facebook", "public_profile", fbSession.AccessToken, null, null);
             if (sessionResponse.StatusCode == HttpStatusCode.Created)
             {
-                SettingsManager.Instance.WriteToSettings(SettingsKeys.CurrentUserId, sessionResponse.Result.Session.UserId);
                 NavigationService.Navigate(ViewLocator.Dialogs,
                                                     new DialogsNavigationParameter
                                                     {

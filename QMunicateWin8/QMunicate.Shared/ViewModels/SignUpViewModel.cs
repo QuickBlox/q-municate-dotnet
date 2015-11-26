@@ -195,7 +195,6 @@ namespace QMunicate.ViewModels
             var loginResponse = await QuickbloxClient.AuthenticationClient.ByEmailAsync(Email, Password);
             if (loginResponse.StatusCode == HttpStatusCode.Accepted)
             {
-                SettingsManager.Instance.WriteToSettings(SettingsKeys.CurrentUserId, loginResponse.Result.User.Id);
                 return loginResponse.Result.User.Id;
             }
             else

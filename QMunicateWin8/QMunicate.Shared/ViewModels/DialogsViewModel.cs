@@ -57,6 +57,15 @@ namespace QMunicate.ViewModels
             if (parameter != null && e.NavigationMode != NavigationMode.Back)
             {
                 NavigationService.BackStack.Clear();
+
+                var previousSessionUserId = SettingsManager.Instance.ReadFromSettings<int>(SettingsKeys.CurrentUserId);
+                if (previousSessionUserId != parameter.CurrentUserId)
+                {
+                    ResetPushSettings();
+                }
+
+                SettingsManager.Instance.WriteToSettings(SettingsKeys.CurrentUserId, parameter.CurrentUserId);
+
                 await InitializeChat(parameter.CurrentUserId, parameter.Password);
             }
             await LoadDialogs();
@@ -118,6 +127,14 @@ namespace QMunicate.ViewModels
         }
 
         #endregion
+
+        private void ResetPushSettings()
+        {
+            SettingsManager.Instance.DeleteFromSettings(SettingsKeys.UserDisabledPush);
+            SettingsManager.Instance.DeleteFromSettings(SettingsKeys.PushSubscriptionId);
+            SettingsManager.Instance.DeleteFromSettings(SettingsKeys.PushTokenId);
+            SettingsManager.Instance.DeleteFromSettings(SettingsKeys.PushTokenHash);
+        }
 
         private void OpenChatCommandExecute(object dialog)
         {
