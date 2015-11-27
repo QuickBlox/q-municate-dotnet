@@ -159,7 +159,9 @@
     <Content Include="Assets\title.png" />
     <Content Include="Assets\WideLogo.scale-240.png" />
     <None Include="Package.StoreAssociation.xml" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\PrivateChatPage.xaml">
@@ -240,12 +242,12 @@
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\portable-net45+wp80+win8+wpa81+aspnetcore50\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Quickblox.Sdk, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Quickblox.Sdk.1.0.2\lib\wpa81\Quickblox.Sdk.dll</HintPath>
+    <Reference Include="Quickblox.Sdk, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Quickblox.Sdk.1.0.3\lib\wpa81\Quickblox.Sdk.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="UbietyXmpp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Quickblox.Sdk.1.0.2\lib\wpa81\UbietyXmpp.dll</HintPath>
+      <HintPath>..\..\packages\Quickblox.Sdk.1.0.3\lib\wpa81\UbietyXmpp.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
