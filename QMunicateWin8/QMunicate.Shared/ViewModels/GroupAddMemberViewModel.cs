@@ -263,7 +263,7 @@ namespace QMunicate.ViewModels
                 dialog.OccupantIds = updateDialogResponse.Result.OccupantsIds;
 
                 var groupChatManager = QuickbloxClient.ChatXmppClient.GetGroupChatManager(editedDialog.XmppRoomJid, editedDialog.Id);
-                groupChatManager.NotifyAboutGroupUpdate(addedUsers);
+                groupChatManager.NotifyAboutGroupUpdate(addedUsers, new List<int>(), updateDialogResponse.Result);
 
                 NavigationService.Navigate(ViewLocator.GroupChat, editedDialog.Id);
             }
@@ -300,7 +300,7 @@ namespace QMunicate.ViewModels
                     privateChatManager.NotifyAboutGroupCreation(createDialogResponse.Result.Id);
                 }
 
-                groupChatManager.NotifyAboutGroupCreation(createDialogResponse.Result.OccupantsIds);
+                groupChatManager.NotifyAboutGroupCreation(createDialogResponse.Result.OccupantsIds, createDialogResponse.Result);
 
                 NavigationService.Navigate(ViewLocator.GroupChat, createDialogResponse.Result.Id);
             }

@@ -164,14 +164,14 @@ namespace QMunicate.ViewModels
                     if (!string.IsNullOrEmpty(updateDialogRequest.Name))
                     {
                         dialog.Name = updateDialogRequest.Name;
-                        groupChatManager.NotifyGroupNameChanged(updateDialogRequest.Name);
+                        groupChatManager.NotifyGroupNameChanged(updateDialogRequest.Name, updateDialogResponse.Result.UpdateAt);
                     }
 
                     if (!string.IsNullOrEmpty(updateDialogRequest.PhotoLink))
                     {
                         dialog.Photo = updateDialogRequest.PhotoLink;
                         dialog.Image = ChatImage;
-                        groupChatManager.NotifyGroupImageChanged(updateDialogRequest.PhotoLink);
+                        groupChatManager.NotifyGroupImageChanged(updateDialogRequest.PhotoLink, updateDialogResponse.Result.UpdateAt);
                     }
                     
                     IsLoading = false;

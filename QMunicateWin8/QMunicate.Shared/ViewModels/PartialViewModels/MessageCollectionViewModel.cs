@@ -199,8 +199,10 @@ namespace QMunicate.ViewModels.PartialViewModels
             var cachingQbClient = ServiceLocator.Locator.Get<ICachingQuickbloxClient>();
             var senderUser = await cachingQbClient.GetUserById(message.SenderId);
 
+            var createdGroupOccupantsIdsString = string.IsNullOrEmpty(message.AddedOccupantsIds) ? message.OccupantsIds : message.AddedOccupantsIds;
+
             var addedUsersBuilder = new StringBuilder();
-            List<int> occupantsIds = ConvertStringToIntArray(message.OccupantsIds);
+            List<int> occupantsIds = ConvertStringToIntArray(createdGroupOccupantsIdsString);
             foreach (var userId in occupantsIds.Where(o => o != message.SenderId))
             {
                 var user = await cachingQbClient.GetUserById(userId);
@@ -210,7 +212,7 @@ namespace QMunicate.ViewModels.PartialViewModels
             if (addedUsersBuilder.Length > 1)
                 addedUsersBuilder.Remove(addedUsersBuilder.Length - 2, 2);
 
-            return string.Format("{0} has added {1} to the group chat", senderUser == null ? "" : senderUser.FullName, addedUsersBuilder);
+            return $"{(senderUser == null ? "" : senderUser.FullName)} has added {addedUsersBuilder} to the group chat";
         }
 
         private async Task<string> BuildGroupUpdateMessage(Message message)
@@ -220,15 +222,17 @@ namespace QMunicate.ViewModels.PartialViewModels
 
             string messageText = null;
             if (!string.IsNullOrEmpty(message.RoomName))
-                messageText = string.Format("{0} has changed the chat name to {1}", senderUser == null ? "" : senderUser.FullName, message.RoomName);
+                messageText = $"{(senderUser == null ? "" : senderUser.FullName)} has changed the chat name to {message.RoomName}";
 
             if (!string.IsNullOrEmpty(message.RoomPhoto))
-                messageText = string.Format("{0} has changed the chat picture", senderUser == null ? "" : senderUser.FullName);
+                messageText = $"{(senderUser == null ? "" : senderUser.FullName)} has changed the chat picture";
 
-            if (!string.IsNullOrEmpty(message.OccupantsIds))
+            if (!string.IsNullOrEmpty(message.OccupantsIds) || !string.IsNullOrEmpty(message.AddedOccupantsIds))
             {
+                var createdGroupOccupantsIdsString = string.IsNullOrEmpty(message.AddedOccupantsIds) ? message.OccupantsIds : message.AddedOccupantsIds;
+
                 var addedUsersBuilder = new StringBuilder();
-                List<int> occupantsIds = ConvertStringToIntArray(message.OccupantsIds);
+                List<int> occupantsIds = ConvertStringToIntArray(createdGroupOccupantsIdsString);
                 foreach (var userId in occupantsIds.Where(o => o != message.SenderId))
                 {
                     var user = await cachingQbClient.GetUserById(userId);
@@ -238,7 +242,7 @@ namespace QMunicate.ViewModels.PartialViewModels
                 if (addedUsersBuilder.Length > 1)
                     addedUsersBuilder.Remove(addedUsersBuilder.Length - 2, 2);
 
-                messageText = string.Format("{0} has added {1} to the group chat", senderUser == null ? "" : senderUser.FullName, addedUsersBuilder);
+                messageText = $"{(senderUser == null ? "" : senderUser.FullName)} has added {addedUsersBuilder} to the group chat";
             }
 
             if (message.DeletedId != 0)
