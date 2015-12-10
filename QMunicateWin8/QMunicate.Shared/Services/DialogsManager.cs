@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using QMunicate.Core.DependencyInjection;
+using QMunicate.Core.Logger;
 using QMunicate.Helper;
 using QMunicate.ViewModels.PartialViewModels;
 using Quickblox.Sdk;
@@ -122,6 +123,14 @@ namespace QMunicate.Services
                 int itemIndex = Dialogs.IndexOf(dialog);
                 Dialogs.Move(itemIndex, 0);
             }
+            else // This is depricated now. We use Quickblox System messages instead. Left for backward compatibility
+            {
+                await QmunicateLoggerHolder.Log(QmunicateLogLevel.Warn, "The dialog wasn't found in DialogsManager. Reloading dialogs.");
+                await ReloadDialogs();
+                areAllGroupDialogsJoined = false;
+                JoinAllGroupDialogs();
+            }
+
         }
 
         #endregion
