@@ -162,7 +162,9 @@ namespace QMunicate.ViewModels
         protected override void OnIsLoadingChanged()
         {
             SendCommand.RaiseCanExecuteChanged();
-            
+            AcceptRequestCommand.RaiseCanExecuteChanged();
+            RejectRequestCommand.RaiseCanExecuteChanged();
+            ShowUserInfoCommand.RaiseCanExecuteChanged();
         }
 
         #endregion
