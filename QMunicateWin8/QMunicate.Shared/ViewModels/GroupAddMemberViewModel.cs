@@ -271,8 +271,8 @@ namespace QMunicate.ViewModels
 
         private async Task CreateGroup()
         {
-            var selectedContacts = allContacts.Where(c => c.IsSelected).ToList();
-            string selectedUsersString = BuildUsersString(selectedContacts.Select(c => c.Item.UserId));
+            var selectedContactsIds = allContacts.Where(c => c.IsSelected).Select(c => c.Item.UserId).ToList();
+            string selectedUsersString = BuildUsersString(selectedContactsIds);
 
             string imageLink = null;
             if (chatImageBytes != null)
@@ -294,13 +294,8 @@ namespace QMunicate.ViewModels
                 var groupChatManager = QuickbloxClient.ChatXmppClient.GetGroupChatManager(createDialogResponse.Result.XmppRoomJid, createDialogResponse.Result.Id);
                 groupChatManager.JoinGroup(currentUserId.ToString());
 
-                foreach (var contact in selectedContacts)
-                {
-                    var privateChatManager = QuickbloxClient.ChatXmppClient.GetPrivateChatManager(contact.Item.UserId, createDialogResponse.Result.Id);
-                    privateChatManager.NotifyAboutGroupCreation(createDialogResponse.Result.Id);
-                }
 
-                groupChatManager.NotifyAboutGroupCreation(createDialogResponse.Result.OccupantsIds, createDialogResponse.Result);
+                groupChatManager.NotifyAboutGroupCreation(selectedContactsIds, createDialogResponse.Result);
 
                 NavigationService.Navigate(ViewLocator.GroupChat, createDialogResponse.Result.Id);
             }

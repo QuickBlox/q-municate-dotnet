@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using QMunicate.Core.DependencyInjection;
-using QMunicate.Core.Logger;
 using QMunicate.Helper;
 using QMunicate.ViewModels.PartialViewModels;
 using Quickblox.Sdk;
@@ -14,6 +13,8 @@ using Quickblox.Sdk.Builder;
 using Quickblox.Sdk.GeneralDataModel.Models;
 using Quickblox.Sdk.Modules.ChatModule.Models;
 using Quickblox.Sdk.Modules.ChatModule.Requests;
+using Quickblox.Sdk.Modules.ChatXmppModule.Models;
+using Quickblox.Sdk.Modules.Models;
 
 namespace QMunicate.Services
 {
@@ -41,6 +42,7 @@ namespace QMunicate.Services
         {
             this.quickbloxClient = quickbloxClient;
             quickbloxClient.ChatXmppClient.OnMessageReceived += MessagesClientOnOnMessageReceived;
+            quickbloxClient.ChatXmppClient.OnSystemMessageReceived += MessagesClientOnOnSystemMessageReceived;
             Dialogs = new ObservableCollection<DialogViewModel>();
         }
 
@@ -120,28 +122,57 @@ namespace QMunicate.Services
                 int itemIndex = Dialogs.IndexOf(dialog);
                 Dialogs.Move(itemIndex, 0);
             }
-            else
-            {
-                await QmunicateLoggerHolder.Log(QmunicateLogLevel.Warn, "The dialog wasn't found in DialogsManager. Reloading dialogs.");
-                await ReloadDialogs();
-                areAllGroupDialogsJoined = false;
-                JoinAllGroupDialogs();
-            }
         }
 
         #endregion
 
         #region Private methods
 
-        private void MessagesClientOnOnMessageReceived(object sender, Message message)
+        private async void MessagesClientOnOnMessageReceived(object sender, Message message)
         {
-            CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
             {
                 await UpdateDialogLastMessage(message.ChatDialogId, message.MessageText, message.DateSent.ToDateTime());
 
                 if (message.NotificationType == NotificationTypes.GroupUpdate)
                     await UpdateGroupDialog(message);
             });
+        }
+
+        private async void MessagesClientOnOnSystemMessageReceived(object sender, SystemMessage message)
+        {
+            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            {
+                var groupInfoMessage = message as GroupInfoMessage;
+                if (groupInfoMessage != null)
+                {
+                    await OnGroupInfoMessage(groupInfoMessage);
+                }
+            });
+        }
+
+        private async Task OnGroupInfoMessage(GroupInfoMessage groupInfoMessage)
+        {
+            var dialog = new Dialog
+            {
+                Id = groupInfoMessage.DialogId,
+                LastMessage = "NotificationType",
+                LastMessageDateSent = groupInfoMessage.DateSent.ToUnixEpoch(),
+                Name = groupInfoMessage.RoomName,
+                Photo = groupInfoMessage.RoomPhoto,
+                OccupantsIds = groupInfoMessage.AddedOccupantIds,
+                Type = groupInfoMessage.DialogType,
+                XmppRoomJid = groupInfoMessage.RoomJid
+            };
+
+            var dialogViewModel = DialogViewModel.FromDialog(dialog);
+            var imagesService = ServiceLocator.Locator.Get<IImageService>();
+            dialogViewModel.Image = await imagesService.GetPublicImage(dialogViewModel.Photo);
+            int currentUserId = SettingsManager.Instance.ReadFromSettings<int>(SettingsKeys.CurrentUserId);
+            var groupChatManager = quickbloxClient.ChatXmppClient.GetGroupChatManager(dialogViewModel.XmppRoomJid, dialogViewModel.Id);
+            groupChatManager.JoinGroup(currentUserId.ToString());
+
+            Dialogs.Insert(0, dialogViewModel);
         }
 
         private async Task UpdateGroupDialog(Message message)
