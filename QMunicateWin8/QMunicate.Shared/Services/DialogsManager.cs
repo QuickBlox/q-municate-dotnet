@@ -169,7 +169,7 @@ namespace QMunicate.Services
                 LastMessageDateSent = groupInfoMessage.DateSent.ToUnixEpoch(),
                 Name = groupInfoMessage.RoomName,
                 Photo = groupInfoMessage.RoomPhoto,
-                OccupantsIds = groupInfoMessage.AddedOccupantIds,
+                OccupantsIds = groupInfoMessage.CurrentOccupantsIds,
                 Type = groupInfoMessage.DialogType,
                 XmppRoomJid = groupInfoMessage.RoomJid
             };
