@@ -170,6 +170,12 @@ namespace QMunicate.ViewModels
 
         private async Task UpdateGroupInfo(Message notificationMessage)
         {
+            if (notificationMessage.DeletedOccupantsIds.Any())
+            {
+                dialog.OccupantIds = notificationMessage.CurrentOccupantsIds;
+                NumberOfMembers = dialog.OccupantIds.Count;
+            }
+
             if (!string.IsNullOrEmpty(notificationMessage.RoomPhoto))
             {
                 var imagesService = ServiceLocator.Locator.Get<IImageService>();

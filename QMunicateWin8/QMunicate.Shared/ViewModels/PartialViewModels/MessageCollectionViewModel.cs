@@ -241,6 +241,12 @@ namespace QMunicate.ViewModels.PartialViewModels
                 messageText = $"{(senderUser == null ? "" : senderUser.FullName)} has added {addedUsersBuilder} to the group chat";
             }
 
+            if (message.DeletedOccupantsIds.Any())
+            {
+                var user = await cachingQbClient.GetUserById(message.DeletedOccupantsIds.First());
+                messageText = $"{user?.FullName} has left";
+            }
+
             if (message.DeletedId != 0)
             {
                 var user = await cachingQbClient.GetUserById(message.DeletedId);
