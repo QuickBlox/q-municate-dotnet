@@ -199,10 +199,8 @@ namespace QMunicate.ViewModels.PartialViewModels
             var cachingQbClient = ServiceLocator.Locator.Get<ICachingQuickbloxClient>();
             var senderUser = await cachingQbClient.GetUserById(message.SenderId);
 
-            var createdGroupOccupantsIdsString = string.IsNullOrEmpty(message.AddedOccupantsIds) ? message.OccupantsIds : message.AddedOccupantsIds;
-
             var addedUsersBuilder = new StringBuilder();
-            List<int> occupantsIds = ConvertStringToIntArray(createdGroupOccupantsIdsString);
+            IList<int> occupantsIds = !message.AddedOccupantsIds.Any() ? message.OccupantsIds : message.AddedOccupantsIds;
             foreach (var userId in occupantsIds.Where(o => o != message.SenderId))
             {
                 var user = await cachingQbClient.GetUserById(userId);
@@ -227,12 +225,10 @@ namespace QMunicate.ViewModels.PartialViewModels
             if (!string.IsNullOrEmpty(message.RoomPhoto))
                 messageText = $"{(senderUser == null ? "" : senderUser.FullName)} has changed the chat picture";
 
-            if (!string.IsNullOrEmpty(message.OccupantsIds) || !string.IsNullOrEmpty(message.AddedOccupantsIds))
+            if (message.AddedOccupantsIds.Any() || message.AddedOccupantsIds.Any())
             {
-                var createdGroupOccupantsIdsString = string.IsNullOrEmpty(message.AddedOccupantsIds) ? message.OccupantsIds : message.AddedOccupantsIds;
-
                 var addedUsersBuilder = new StringBuilder();
-                List<int> occupantsIds = ConvertStringToIntArray(createdGroupOccupantsIdsString);
+                IList<int> occupantsIds = !message.AddedOccupantsIds.Any() ? message.OccupantsIds : message.AddedOccupantsIds;
                 foreach (var userId in occupantsIds.Where(o => o != message.SenderId))
                 {
                     var user = await cachingQbClient.GetUserById(userId);
@@ -274,22 +270,6 @@ namespace QMunicate.ViewModels.PartialViewModels
             if (senderUser != null) messageViewModel.SenderName = senderUser.FullName;
 
             return messageViewModel;
-        }
-
-        private List<int> ConvertStringToIntArray(string occupantsIdsString)
-        {
-            var occupantsIds = new List<int>();
-            if (string.IsNullOrEmpty(occupantsIdsString)) return occupantsIds;
-
-            var idsStrings = occupantsIdsString.Split(',');
-            foreach (string idsString in idsStrings)
-            {
-                int id;
-                if (int.TryParse(idsString, out id))
-                    occupantsIds.Add(id);
-            }
-
-            return occupantsIds;
         }
 
         #endregion
