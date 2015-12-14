@@ -6,6 +6,7 @@
 
         public const string ApiBaseEndPoint = "https://api.quickblox.com";
         public const string ChatEndpoint = "chat.quickblox.com";
+        public const string ChatMucDomain = "muc." + ChatEndpoint;
 
         #endregion
 

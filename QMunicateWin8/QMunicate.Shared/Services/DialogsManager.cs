@@ -171,7 +171,7 @@ namespace QMunicate.Services
                 Photo = groupInfoMessage.RoomPhoto,
                 OccupantsIds = groupInfoMessage.CurrentOccupantsIds,
                 Type = groupInfoMessage.DialogType,
-                XmppRoomJid = groupInfoMessage.RoomJid
+                XmppRoomJid = BuildRoomJid(groupInfoMessage.DialogId)
             };
 
             var dialogViewModel = DialogViewModel.FromDialog(dialog);
@@ -210,6 +210,11 @@ namespace QMunicate.Services
                 return otherContact.Name;
 
             return null;
+        }
+
+        private string BuildRoomJid(string dialogId)
+        {
+            return $"{ApplicationKeys.ApplicationId}_{dialogId}@{ApplicationKeys.ChatMucDomain}";
         }
 
         private async Task FixPrivateDialogsNamesAndImages()
