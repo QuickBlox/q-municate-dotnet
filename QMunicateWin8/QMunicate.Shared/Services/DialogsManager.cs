@@ -200,6 +200,11 @@ namespace QMunicate.Services
                 {
                     updatedDialog.Name = message.RoomName;
                 }
+
+                if (message.CurrentOccupantsIds.Any())
+                {
+                    updatedDialog.OccupantIds = message.CurrentOccupantsIds;
+                }
             }
         }
 

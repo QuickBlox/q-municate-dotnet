@@ -170,10 +170,9 @@ namespace QMunicate.ViewModels
 
         private async Task UpdateGroupInfo(Message notificationMessage)
         {
-            if (notificationMessage.DeletedOccupantsIds.Any())
+            if (notificationMessage.CurrentOccupantsIds.Any())
             {
-                dialog.OccupantIds = notificationMessage.CurrentOccupantsIds;
-                NumberOfMembers = dialog.OccupantIds.Count;
+                NumberOfMembers = notificationMessage.CurrentOccupantsIds.Count;
             }
 
             if (!string.IsNullOrEmpty(notificationMessage.RoomPhoto))
