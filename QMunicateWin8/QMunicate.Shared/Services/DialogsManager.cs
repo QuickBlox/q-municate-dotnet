@@ -31,6 +31,8 @@ namespace QMunicate.Services
     {
         #region Fields
 
+        private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime();
+
         private bool isReloadingDialogs;
         private bool areAllGroupDialogsJoined;
         private readonly IQuickbloxClient quickbloxClient;
@@ -118,6 +120,8 @@ namespace QMunicate.Services
             var dialog = Dialogs.FirstOrDefault(d => d.Id == dialogId);
             if (dialog != null)
             {
+                if (string.IsNullOrEmpty(lastActivity) && lastMessageSent == UnixEpoch) return;
+
                 dialog.LastActivity = lastActivity;
                 dialog.LastMessageSent = lastMessageSent;
                 int itemIndex = Dialogs.IndexOf(dialog);
