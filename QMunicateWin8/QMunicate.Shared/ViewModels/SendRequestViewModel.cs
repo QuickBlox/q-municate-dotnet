@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
@@ -96,8 +97,26 @@ namespace QMunicate.ViewModels
         {
             IsLoading = true;
 
+            var messagesService = ServiceLocator.Locator.Get<IMessageService>();
+
+            bool isSent = await SendContactRequest();
+            if (isSent)
+            {
+                await messagesService.ShowAsync("Sent", "A contact request was sent");
+            }
+            else
+            {
+                await messagesService.ShowAsync("Error", "Failed to send a contact request");
+            }
+
+            IsLoading = false;
+            NavigationService.GoBack();
+        }
+
+        private async Task<bool> SendContactRequest()
+        {
             var createDialogResponse = await QuickbloxClient.ChatClient.CreateDialogAsync(UserName, DialogType.Private, otherUserId.ToString());
-            if (createDialogResponse.StatusCode != HttpStatusCode.Created) return;
+            if (createDialogResponse.StatusCode != HttpStatusCode.Created) return false;
 
             var privateChatManager = QuickbloxClient.ChatXmppClient.GetPrivateChatManager(otherUserId, createDialogResponse.Result.Id);
             privateChatManager.AddToFriends(UserName);
@@ -105,11 +124,7 @@ namespace QMunicate.ViewModels
             var dialogsManager = ServiceLocator.Locator.Get<IDialogsManager>();
             await dialogsManager.ReloadDialogs();
 
-            var messagesService = ServiceLocator.Locator.Get<IMessageService>();
-            await messagesService.ShowAsync("Sent", "A contact request was sent");
-
-            IsLoading = false;
-            NavigationService.GoBack();
+            return true;
         }
 
         #endregion
