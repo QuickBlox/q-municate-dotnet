@@ -29,7 +29,6 @@ namespace QMunicate.Views
         public PrivateChatPage()
         {
             this.InitializeComponent();
-            SendButton.IsTabStop = false;
             viewModel = this.DataContext as PrivateChatViewModel;
         }
 

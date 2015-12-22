@@ -49,6 +49,7 @@ namespace QMunicate.ViewModels
         {
             MessageCollectionViewModel = new MessageCollectionViewModel();
             SendCommand = new RelayCommand(SendCommandExecute, () => !IsLoading && IsMessageSendingAllowed);
+            SendAttachmentCommand = new RelayCommand(SendAttachmentCommandExecute, () => !IsLoading && IsMessageSendingAllowed);
             AcceptRequestCommand = new RelayCommand(AcceptRequestCommandExecute, () => !IsLoading);
             RejectRequestCommand = new RelayCommand(RejectCRequestCommandExecute, () => !IsLoading);
             ShowUserInfoCommand = new RelayCommand(ShowUserInfoCommandExecute, () => !IsLoading);
@@ -92,7 +93,7 @@ namespace QMunicate.ViewModels
             set
             {
                 Set(ref isActiveContactRequest, value);
-                RaisePropertyChanged(()=> IsMessageSendingAllowed);
+                NotifyCanExecuteChanged();
             }
         }
 
@@ -102,8 +103,8 @@ namespace QMunicate.ViewModels
             set
             {
                 Set(ref isWaitingForContactResponse, value);
-                RaisePropertyChanged(() => IsMessageSendingAllowed);
-                
+                NotifyCanExecuteChanged();
+
             }
         }
 
@@ -113,7 +114,7 @@ namespace QMunicate.ViewModels
             set
             {
                 Set(ref isRequestRejected, value);
-                RaisePropertyChanged(() => IsMessageSendingAllowed);                
+                NotifyCanExecuteChanged();
             }
         }
 
@@ -129,6 +130,8 @@ namespace QMunicate.ViewModels
         }
 
         public RelayCommand SendCommand { get; private set; }
+
+        public RelayCommand SendAttachmentCommand { get; private set; }
 
         public RelayCommand AcceptRequestCommand { get; private set; }
 
@@ -161,10 +164,7 @@ namespace QMunicate.ViewModels
 
         protected override void OnIsLoadingChanged()
         {
-            SendCommand.RaiseCanExecuteChanged();
-            AcceptRequestCommand.RaiseCanExecuteChanged();
-            RejectRequestCommand.RaiseCanExecuteChanged();
-            ShowUserInfoCommand.RaiseCanExecuteChanged();
+            NotifyCanExecuteChanged();
         }
 
         #endregion
@@ -324,6 +324,11 @@ namespace QMunicate.ViewModels
             NewMessageText = "";
         }
 
+        private async void SendAttachmentCommandExecute()
+        {
+
+        }
+
         private async void AcceptRequestCommandExecute()
         {
             if (privateChatManager == null) return;
@@ -372,6 +377,15 @@ namespace QMunicate.ViewModels
             {
                 CheckIsMessageSendingAllowed();
             });
+        }
+
+        private void NotifyCanExecuteChanged()
+        {
+            SendCommand.RaiseCanExecuteChanged();
+            SendAttachmentCommand.RaiseCanExecuteChanged();
+            AcceptRequestCommand.RaiseCanExecuteChanged();
+            RejectRequestCommand.RaiseCanExecuteChanged();
+            ShowUserInfoCommand.RaiseCanExecuteChanged();
         }
 
         #endregion
