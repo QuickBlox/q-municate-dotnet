@@ -1,4 +1,5 @@
-﻿using QMunicate.Core.DependencyInjection;
+﻿using System;
+using QMunicate.Core.DependencyInjection;
 using QMunicate.Core.Observable;
 using QMunicate.Services;
 using Quickblox.Sdk;
@@ -14,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace QMunicate.ViewModels.PartialViewModels
 {
@@ -274,6 +276,17 @@ namespace QMunicate.ViewModels.PartialViewModels
             var cachingQbClient = ServiceLocator.Locator.Get<ICachingQuickbloxClient>();
             var senderUser = await cachingQbClient.GetUserById(message.SenderId);
             if (senderUser != null) messageViewModel.SenderName = senderUser.FullName;
+
+            bool isImageAttached = message.Attachments != null && message.Attachments.Any() && !string.IsNullOrEmpty(message.Attachments[0].Url);
+
+            if (isImageAttached)
+            {
+                var attachedImageUri = new Uri(message.Attachments[0].Url);
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    messageViewModel.AttachedImage = new BitmapImage(attachedImageUri);
+                });
+            }
 
             return messageViewModel;
         }
