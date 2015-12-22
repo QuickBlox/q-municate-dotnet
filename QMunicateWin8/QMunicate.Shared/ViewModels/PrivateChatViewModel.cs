@@ -8,19 +8,26 @@ using QMunicate.ViewModels.PartialViewModels;
 using Quickblox.Sdk;
 using Quickblox.Sdk.GeneralDataModel.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
+using Windows.Storage;
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using QMunicate.Services;
 using Quickblox.Sdk.Modules.ChatXmppModule.Interfaces;
+using Quickblox.Sdk.Modules.ChatXmppModule.Models;
+using Quickblox.Sdk.Modules.ContentModule;
 
 namespace QMunicate.ViewModels
 {
-    public class PrivateChatViewModel : ViewModel
+    public class PrivateChatViewModel : ViewModel, IFileOpenPickerContinuable
     {
         #region Fields
 
@@ -165,6 +172,32 @@ namespace QMunicate.ViewModels
         protected override void OnIsLoadingChanged()
         {
             NotifyCanExecuteChanged();
+        }
+
+        #endregion
+
+        #region IFileOpenPickerContinuable Members
+
+        public async void ContinueFileOpenPicker(IReadOnlyList<StorageFile> files)
+        {
+            if (files == null || !files.Any()) return;
+
+            using (var stream = (FileRandomAccessStream) await files[0].OpenAsync(FileAccessMode.Read))
+            {
+                var newImageBytes = new byte[stream.Size];
+                using (var dataReader = new DataReader(stream))
+                {
+                    await dataReader.LoadAsync((uint)stream.Size);
+                    dataReader.ReadBytes(newImageBytes);
+                }
+
+                var contentHelper = new ContentClientHelper(QuickbloxClient.ContentClient);
+                var imageUploadResult = await contentHelper.UploadPublicImage(newImageBytes);
+                if (imageUploadResult != null)
+                {
+                    await SendAttachment(imageUploadResult);
+                }
+            }
         }
 
         #endregion
@@ -326,7 +359,37 @@ namespace QMunicate.ViewModels
 
         private async void SendAttachmentCommandExecute()
         {
+            FileOpenPicker picker = new FileOpenPicker();
+            picker.FileTypeFilter.Add(".jpg");
+            picker.FileTypeFilter.Add(".png");
+#if WINDOWS_PHONE_APP
+            picker.PickSingleFileAndContinue();
+#endif
+        }
 
+        private async Task SendAttachment(ImageUploadResult imageUploadResult)
+        {
+            if (string.IsNullOrEmpty(imageUploadResult.Url) || imageUploadResult.BlodId == 0) return;
+
+            var attachment = new AttachmentTag
+            {
+                Id = imageUploadResult.BlodId.ToString(),
+                Url = imageUploadResult.Url,
+                Type = "photo"
+            };
+
+            privateChatManager.SendAttachemnt(attachment);
+
+            var messageViewModel = new MessageViewModel()
+            {
+                AttachedImage = new BitmapImage(new Uri(imageUploadResult.Url)),
+                MessageType = MessageType.Outgoing,
+                DateTime = DateTime.Now
+            };
+
+            await MessageCollectionViewModel.AddNewMessage(messageViewModel);
+            var dialogsManager = ServiceLocator.Locator.Get<IDialogsManager>();
+            await dialogsManager.UpdateDialogLastMessage(dialog.Id, NewMessageText, DateTime.Now);
         }
 
         private async void AcceptRequestCommandExecute()
