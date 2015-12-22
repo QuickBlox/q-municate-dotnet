@@ -278,7 +278,7 @@ namespace QMunicate.ViewModels
             if (chatImageBytes != null)
             {
                 var contentHelper = new ContentClientHelper(QuickbloxClient.ContentClient);
-                imageLink = await contentHelper.UploadPublicImage(chatImageBytes);
+                imageLink = (await contentHelper.UploadPublicImage(chatImageBytes))?.Url;
             }
 
             var createDialogResponse = await QuickbloxClient.ChatClient.CreateDialogAsync(GroupName, DialogType.Group, selectedUsersString, imageLink);
