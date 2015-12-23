@@ -181,7 +181,7 @@ namespace QMunicate.ViewModels
         public async void ContinueFileOpenPicker(IReadOnlyList<StorageFile> files)
         {
             if (files == null || !files.Any()) return;
-
+            IsLoading = true;
             using (var stream = (FileRandomAccessStream) await files[0].OpenAsync(FileAccessMode.Read))
             {
                 var newImageBytes = new byte[stream.Size];
@@ -198,6 +198,7 @@ namespace QMunicate.ViewModels
                     await SendAttachment(imageUploadResult);
                 }
             }
+            IsLoading = false;
         }
 
         #endregion

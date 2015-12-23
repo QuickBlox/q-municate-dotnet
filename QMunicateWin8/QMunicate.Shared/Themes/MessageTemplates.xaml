@@ -104,8 +104,8 @@
         <Grid Margin="{StaticResource DefaultVerticalMargin}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="8*"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Polygon Points="12,0 12,12 0,12 12,0" Fill="{StaticResource IncomingMessageBrush}" VerticalAlignment="Bottom"
                                  Margin="0,24,0,0" />
@@ -114,7 +114,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Image Source="{Binding AttachedImage}" Height="120" Margin="{StaticResource DefaultMessageMargin}"/>
+                <Image Source="{Binding AttachedImage}" Height="150" Margin="{StaticResource DefaultMessageMargin}"/>
                 <TextBlock Grid.Row="1" Text="{Binding DateTime, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:HH:mm}'}"
                                        FontSize="{StaticResource NormalFontSize}" Foreground="Gray" Margin="{StaticResource DefaultMessageMargin}" HorizontalAlignment="Right"/>
             </Grid>
@@ -124,8 +124,8 @@
     <DataTemplate x:Key="OutgoingImageTemplate">
         <Grid Margin="{StaticResource DefaultVerticalMargin}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="1" Background="{StaticResource OutogoingMessageBrush}">
@@ -133,7 +133,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Image Source="{Binding AttachedImage}" Height="120" Margin="{StaticResource DefaultMessageMargin}"/>
+                <Image Source="{Binding AttachedImage}" Height="150" Margin="{StaticResource DefaultMessageMargin}"/>
                 <TextBlock Grid.Row="1" Text="{Binding DateTime, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:HH:mm}'}"
                                        FontSize="{StaticResource NormalFontSize}" Foreground="Gainsboro" Margin="{StaticResource DefaultMessageMargin}" HorizontalAlignment="Right"/>
             </Grid>
