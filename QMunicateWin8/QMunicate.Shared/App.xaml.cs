@@ -220,6 +220,7 @@ namespace QMunicate
             dictionary.Add(ViewLocator.SettingsEdit, typeof(SettingsEditPage));
             dictionary.Add(ViewLocator.UserInfo, typeof(UserInfoPage));
             dictionary.Add(ViewLocator.First, typeof(FirstPage));
+            dictionary.Add(ViewLocator.ImagePreview, typeof(ImagePreviewPage));
 
             return new PageResolver(dictionary);
         }

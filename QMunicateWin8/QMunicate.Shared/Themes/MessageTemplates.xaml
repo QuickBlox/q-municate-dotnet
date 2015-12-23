@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:selectors="using:QMunicate.Selectors">
+    xmlns:selectors="using:QMunicate.Selectors"
+    xmlns:tapListener="using:QMunicate.Core.TapListener">
 
     <Thickness x:Key="DefaultMessageMargin">12 6 12 6</Thickness>
     <SolidColorBrush x:Key="IncomingMessageBrush" Color="LightGray"/>
@@ -114,7 +115,8 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Image Source="{Binding AttachedImage}" Height="150" Margin="{StaticResource DefaultMessageMargin}"/>
+                <Image Source="{Binding AttachedImage}" Height="150" Margin="{StaticResource DefaultMessageMargin}" 
+                       tapListener:TapListener.TapCommand="{Binding DataContext.ShowImageCommand, ElementName=Page}" tapListener:TapListener.TapCommandParameter="{Binding AttachedImage}"/>
                 <TextBlock Grid.Row="1" Text="{Binding DateTime, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:HH:mm}'}"
                                        FontSize="{StaticResource NormalFontSize}" Foreground="Gray" Margin="{StaticResource DefaultMessageMargin}" HorizontalAlignment="Right"/>
             </Grid>
@@ -133,7 +135,8 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Image Source="{Binding AttachedImage}" Height="150" Margin="{StaticResource DefaultMessageMargin}"/>
+                <Image Source="{Binding AttachedImage}" Height="150" Margin="{StaticResource DefaultMessageMargin}" 
+                       tapListener:TapListener.TapCommand="{Binding DataContext.ShowImageCommand, ElementName=Page}" tapListener:TapListener.TapCommandParameter="{Binding AttachedImage}"/>
                 <TextBlock Grid.Row="1" Text="{Binding DateTime, Converter={StaticResource StringFormatConverter}, ConverterParameter='{}{0:HH:mm}'}"
                                        FontSize="{StaticResource NormalFontSize}" Foreground="Gainsboro" Margin="{StaticResource DefaultMessageMargin}" HorizontalAlignment="Right"/>
             </Grid>

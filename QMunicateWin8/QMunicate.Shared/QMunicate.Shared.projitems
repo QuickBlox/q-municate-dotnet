@@ -43,6 +43,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)SettingsManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewLocator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\DialogsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ImagePreviewViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PartialViewModels\DayOfMessages.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PartialViewModels\DialogViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\PartialViewModels\MessageCollectionViewModel.cs" />

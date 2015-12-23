@@ -90,6 +90,11 @@ namespace QMunicate.ViewModels
             get { return new FirstViewModel(); }
         }
 
+        public ImagePreviewViewModel ImagePreviewViewModel
+        {
+            get { return new ImagePreviewViewModel(); }
+        }
+
         #endregion
 
         #region Public methods

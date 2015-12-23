@@ -60,6 +60,7 @@ namespace QMunicate.ViewModels
             AcceptRequestCommand = new RelayCommand(AcceptRequestCommandExecute, () => !IsLoading);
             RejectRequestCommand = new RelayCommand(RejectCRequestCommandExecute, () => !IsLoading);
             ShowUserInfoCommand = new RelayCommand(ShowUserInfoCommandExecute, () => !IsLoading);
+            ShowImageCommand = new RelayCommand<ImageSource>(ShowImageCommandExecute, img => !IsLoading);
             typingIndicatorTimer.Interval = typingIndicatorTimeout;
             typingIndicatorTimer.Tick += (sender, o) => IsOtherUserTyping = false;
             pausedTypingTimer.Interval = pausedTypingTimeout;
@@ -136,15 +137,17 @@ namespace QMunicate.ViewModels
             set { Set(ref isOtherUserTyping, value); }
         }
 
-        public RelayCommand SendCommand { get; private set; }
+        public RelayCommand SendCommand { get;  }
 
-        public RelayCommand SendAttachmentCommand { get; private set; }
+        public RelayCommand SendAttachmentCommand { get; }
 
-        public RelayCommand AcceptRequestCommand { get; private set; }
+        public RelayCommand AcceptRequestCommand { get;  }
 
-        public RelayCommand RejectRequestCommand { get; private set; }
+        public RelayCommand RejectRequestCommand { get;  }
 
-        public RelayCommand ShowUserInfoCommand { get; private set; }
+        public RelayCommand ShowUserInfoCommand { get;  }
+
+        public RelayCommand<ImageSource> ShowImageCommand { get; }
 
         #endregion
 
@@ -433,6 +436,11 @@ namespace QMunicate.ViewModels
             NavigationService.Navigate(ViewLocator.UserInfo, dialog == null ? null : dialog.Id);
         }
 
+        private void ShowImageCommandExecute(ImageSource image)
+        {
+            NavigationService.Navigate(ViewLocator.ImagePreview, image);
+        }
+
         private async void ChatManagerOnOnMessageReceived(object sender, Message message)
         {
             await MessageCollectionViewModel.AddNewMessage(message);
@@ -450,6 +458,7 @@ namespace QMunicate.ViewModels
             AcceptRequestCommand.RaiseCanExecuteChanged();
             RejectRequestCommand.RaiseCanExecuteChanged();
             ShowUserInfoCommand.RaiseCanExecuteChanged();
+            ShowImageCommand.RaiseCanExecuteChanged();
         }
 
         #endregion
