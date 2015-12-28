@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="18102Eduardo.QmunicateTest" Publisher="CN=E35C0F06-FC5D-4136-BBB2-6D35E30811A6" Version="0.2.7.0" />
-  <mp:PhoneIdentity PhoneProductId="e756cc6f-b795-445d-9846-1179e2800be9" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="43385QuickBloxIncubator.Q-municateMessenger" Publisher="CN=2AED0805-B7EA-4B64-B0F2-6582C35709B3" Version="1.1.0.0" />
+  <mp:PhoneIdentity PhoneProductId="6407901f-30eb-488b-b631-babb2a09f6dc" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>Qmunicate Test</DisplayName>
-    <PublisherDisplayName>Eduardo</PublisherDisplayName>
+    <DisplayName>Q-municate Messenger</DisplayName>
+    <PublisherDisplayName>QuickBlox Incubator</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Prerequisites>
@@ -16,7 +16,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="QMunicate.WindowsPhone.App">
-      <m3:VisualElements DisplayName="Qmunicate Test" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="QMunicate.WindowsPhone" ForegroundText="light" BackgroundColor="transparent" ToastCapable="true">
+      <m3:VisualElements DisplayName="Q-municate Messenger" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="QMunicate.WindowsPhone" ForegroundText="light" BackgroundColor="transparent" ToastCapable="true">
         <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png">
         </m3:DefaultTile>
         <m3:SplashScreen Image="Assets\SplashScreen.png" />
