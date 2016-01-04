@@ -169,7 +169,7 @@ namespace QMunicate.Services
             var dialog = new Dialog
             {
                 Id = groupInfoMessage.DialogId,
-                LastMessage = "NotificationType",
+                LastMessage = "Notification message",
                 LastMessageDateSent = groupInfoMessage.DateSent.ToUnixEpoch(),
                 Name = groupInfoMessage.RoomName,
                 Photo = groupInfoMessage.RoomPhoto,
