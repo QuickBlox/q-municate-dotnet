@@ -142,7 +142,7 @@ namespace QMunicate.ViewModels
             if (newImageBytes != null)
             {
                 var contentHelper = new ContentClientHelper(QuickbloxClient.ContentClient);
-                updateDialogRequest.PhotoLink = await contentHelper.UploadPublicImage(newImageBytes);
+                updateDialogRequest.PhotoLink = (await contentHelper.UploadPublicImage(newImageBytes))?.Url;
             }
 
             if (currentDialog.Name != ChatName)
