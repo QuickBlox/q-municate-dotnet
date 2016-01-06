@@ -110,6 +110,9 @@ namespace QMunicate.ViewModels
 
         private async Task InitializePush()
         {
+            var savedCredentials = ServiceLocator.Locator.Get<ICredentialsService>().GetSavedCredentials();
+            if (savedCredentials == null) return; // subscribing for push notifications only if a user has selected "Remember me"
+
             var pushChannel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
             pushChannel.PushNotificationReceived += PushChannelOnPushNotificationReceived;
 
