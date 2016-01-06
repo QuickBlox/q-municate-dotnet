@@ -31,6 +31,8 @@ namespace QMunicate.ViewModels
         {
             ForgotPasswordCommand = new RelayCommand(ForgotPasswordCommandExecute, () => !IsLoading);
             LoginCommand = new RelayCommand(LoginCommandExecute, () => !IsLoading);
+
+            RememberMe = true;
 #if DEBUG
             Email = "user1@test.com";
             Password = "12345678";

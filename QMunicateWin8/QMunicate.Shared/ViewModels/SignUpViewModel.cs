@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Newtonsoft.Json;
 using QMunicate.Core.Logger;
+using QMunicate.Services;
 using Quickblox.Sdk.Logger;
 using Quickblox.Sdk.Modules.ContentModule;
 using Quickblox.Sdk.Modules.UsersModule.Models;
@@ -166,6 +167,8 @@ namespace QMunicate.ViewModels
                 {
                     if (userImageBytes != null)
                         await UploadUserImage(response.Result.User, userImageBytes);
+
+                    ServiceLocator.Locator.Get<ICredentialsService>().SaveCredentials(new Credentials {Login = email, Password = password});
 
                     NavigationService.Navigate(ViewLocator.Dialogs,
                                                     new DialogsNavigationParameter
