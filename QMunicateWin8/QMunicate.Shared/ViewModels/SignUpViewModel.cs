@@ -15,6 +15,7 @@ using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
+using Newtonsoft.Json;
 using QMunicate.Core.Logger;
 using Quickblox.Sdk.Logger;
 using Quickblox.Sdk.Modules.ContentModule;
@@ -207,14 +208,17 @@ namespace QMunicate.ViewModels
         private async Task UploadUserImage(User user, byte[] imageBytes)
         {
             var contentHelper = new ContentClientHelper(QuickbloxClient.ContentClient);
-            var uploadId = await contentHelper.UploadPrivateImage(imageBytes);
-            if (uploadId == null)
+            var imageUploadResult = await contentHelper.UploadPublicImage(imageBytes);
+            if (imageUploadResult == null)
             {
                 await QmunicateLoggerHolder.Log(QmunicateLogLevel.Warn, "SignUpViewModel. Failed to upload user image");
                 return;
             }
 
-            UpdateUserRequest updateUserRequest = new UpdateUserRequest { User = new UserRequest { BlobId = uploadId } };
+            var customData = new CustomData {AvatarUrl = imageUploadResult.Url, IsImport = true};
+            var customDataJson = JsonConvert.SerializeObject(customData);
+            var updateUserRequest = new UpdateUserRequest {User = new UserRequest {BlobId = imageUploadResult.BlodId, CustomData = customDataJson}};
+
             await QuickbloxClient.UsersClient.UpdateUserAsync(user.Id, updateUserRequest);
         }
 
