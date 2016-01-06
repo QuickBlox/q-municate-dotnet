@@ -184,16 +184,13 @@ namespace QMunicate.ViewModels
             await QuickbloxClient.AuthenticationClient.DeleteSessionAsync(QuickbloxClient.Token);
             SettingsManager.Instance.DeleteFromSettings(SettingsKeys.CurrentUserId);
 
-            var dialogsManager = ServiceLocator.Locator.Get<IDialogsManager>();
-            dialogsManager.Dialogs.Clear();
+            ServiceLocator.Locator.Get<IDialogsManager>().Dialogs.Clear();
 
-            var imagesService = ServiceLocator.Locator.Get<IImageService>();
-            imagesService.ClearImagesCache();
+            ServiceLocator.Locator.Get<IImageService>().ClearImagesCache();
 
-            var cachingClient = ServiceLocator.Locator.Get<ICachingQuickbloxClient>();
-            cachingClient.ClearUsersCache();
+            ServiceLocator.Locator.Get<ICachingQuickbloxClient>().ClearUsersCache();
 
-            DeleteStoredCredentials();
+            ServiceLocator.Locator.Get<ICredentialsService>().DeleteSavedCredentials();
             
             IsLoading = false;
             NavigationService.Navigate(ViewLocator.First);
@@ -207,20 +204,6 @@ namespace QMunicate.ViewModels
             await pushNotificationsManager.DeletePushToken();
 
             SettingsManager.Instance.DeleteFromSettings(SettingsKeys.UserDisabledPush);
-        }
-
-        private void DeleteStoredCredentials()
-        {
-            try
-            {
-                var passwordVault = new PasswordVault();
-                var credentials = passwordVault.FindAllByResource(ApplicationKeys.QMunicateCredentials);
-                if (credentials != null && credentials.Any())
-                {
-                    passwordVault.Remove(credentials[0]);
-                }
-            }
-            catch (Exception) { }
         }
 
         private async void DeleteAccountCommandExecute()

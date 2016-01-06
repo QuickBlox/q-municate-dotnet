@@ -19,11 +19,5 @@
 
         #endregion
 
-        #region Password Vault
-
-        public const string QMunicateCredentials = "QMunicateCredentials";
-
-        #endregion
-
     }
 }
