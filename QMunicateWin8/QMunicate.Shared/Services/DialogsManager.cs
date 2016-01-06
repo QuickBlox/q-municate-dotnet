@@ -5,6 +5,8 @@ using System.Net;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
+using Windows.UI.StartScreen;
+using Newtonsoft.Json;
 using QMunicate.Core.DependencyInjection;
 using QMunicate.Core.Logger;
 using QMunicate.Helper;
@@ -16,6 +18,7 @@ using Quickblox.Sdk.Modules.ChatModule.Models;
 using Quickblox.Sdk.Modules.ChatModule.Requests;
 using Quickblox.Sdk.Modules.ChatXmppModule.Models;
 using Quickblox.Sdk.Modules.Models;
+using Quickblox.Sdk.Modules.UsersModule.Models;
 
 namespace QMunicate.Services
 {
@@ -238,6 +241,11 @@ namespace QMunicate.Services
                 {
                     dialogVm.Name = user.FullName;
                     dialogVm.PrivatePhotoId = user.BlobId;
+                    if (!string.IsNullOrEmpty(user.CustomData))
+                    {
+                        var customData = JsonConvert.DeserializeObject<CustomData>(user.CustomData);
+                        if(customData != null) dialogVm.Photo = customData.AvatarUrl;
+                    }
                 }
             }
         }
@@ -246,18 +254,22 @@ namespace QMunicate.Services
         {
             var imagesService = ServiceLocator.Locator.Get<IImageService>();
 
-            foreach (DialogViewModel dialogVm in Dialogs.Where(dvm => dvm.DialogType == DialogType.Group))
+            foreach (DialogViewModel dialogVm in Dialogs.Where(d => !string.IsNullOrEmpty(d.Photo)))
             {
                 dialogVm.Image = await imagesService.GetPublicImage(dialogVm.Photo);
             }
 
-            Parallel.ForEach(Dialogs.Where(d => d.DialogType == DialogType.Private), async (dialogVm, state) =>
+            Parallel.ForEach(Dialogs.Where(d => string.IsNullOrEmpty(d.Photo) && d.PrivatePhotoId.HasValue), async (dialogVm, state) =>
             {
                 if (dialogVm.PrivatePhotoId.HasValue)
                 {
                     var imageBytes = await imagesService.GetPrivateImageBytes(dialogVm.PrivatePhotoId.Value);
-                    CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+                    if(imageBytes != null)
+                    {
+                        await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
                         dialogVm.Image = await ImageHelper.CreateBitmapImage(imageBytes, decodePixelWidth, decodePixelHeight));
+                    }
+                    
                 }
             });
         }

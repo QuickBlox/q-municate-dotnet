@@ -215,7 +215,7 @@ namespace QMunicate.ViewModels
                 return;
             }
 
-            var customData = new CustomData {AvatarUrl = imageUploadResult.Url, IsImport = true};
+            var customData = new CustomData {AvatarUrl = imageUploadResult.Url, IsImport = "1"};
             var customDataJson = JsonConvert.SerializeObject(customData);
             var updateUserRequest = new UpdateUserRequest {User = new UserRequest {BlobId = imageUploadResult.BlodId, CustomData = customDataJson}};
 

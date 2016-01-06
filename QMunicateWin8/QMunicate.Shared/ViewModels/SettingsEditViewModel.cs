@@ -157,7 +157,7 @@ namespace QMunicate.ViewModels
                 var imageUploadResult = await contentHelper.UploadPublicImage(newImageBytes);
                 if (imageUploadResult != null)
                 {
-                    var customData = new CustomData { AvatarUrl = imageUploadResult.Url, IsImport = true };
+                    var customData = new CustomData { AvatarUrl = imageUploadResult.Url, IsImport = "1" };
                     var customDataJson = JsonConvert.SerializeObject(customData);
                     updateUserRequest.User.BlobId = imageUploadResult.BlodId;
                     updateUserRequest.User.CustomData = customDataJson;
