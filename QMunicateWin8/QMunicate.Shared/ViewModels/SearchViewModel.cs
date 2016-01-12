@@ -162,15 +162,20 @@ namespace QMunicate.ViewModels
                 }
                 else
                 {
-                    foreach (Contact contact in QuickbloxClient.ChatXmppClient.Contacts.Where(c => !string.IsNullOrEmpty(c.Name) && c.Name.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0))
+                    foreach (Contact contact in QuickbloxClient.ChatXmppClient.Contacts)
                     {
-                        LocalResults.Add(UserViewModel.FromContact(contact));
+                        var user = await ServiceLocator.Locator.Get<ICachingQuickbloxClient>().GetUserById(contact.UserId);
+                        if (user != null && user.FullName.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            LocalResults.Add(UserViewModel.FromContact(contact));
+                        }
                     }
                 }
 
                 await FixLocalResultsNames();
                 await LoadLocalResultsImages();
             }
+            IsLoading = false;
         }
 
         /// <summary>
