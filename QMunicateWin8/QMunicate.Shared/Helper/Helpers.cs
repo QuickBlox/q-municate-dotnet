@@ -1,13 +1,16 @@
-﻿using QMunicate.Core.MessageService;
+﻿using System;
+using QMunicate.Core.MessageService;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.Core;
 using Windows.Networking.Connectivity;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using Windows.Storage.Streams;
 using Windows.System.Profile;
+using Windows.UI.Core;
 
 namespace QMunicate.Helper
 {
@@ -56,6 +59,14 @@ namespace QMunicate.Helper
             ConnectionProfile connections = NetworkInformation.GetInternetConnectionProfile();
             bool internet = connections != null && connections.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess;
             return internet;
+        }
+
+        public static async Task RunOnTheUiThread(Func<Task> action)
+        {
+            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            {
+                await action();
+            });
         }
     }
 }

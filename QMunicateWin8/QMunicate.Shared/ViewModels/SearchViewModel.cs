@@ -12,6 +12,8 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Navigation;
 using QMunicate.Core.AsyncLock;
 using QMunicate.Services;
@@ -85,12 +87,18 @@ namespace QMunicate.ViewModels
 
         public override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            await LocalSearch("");
+            QuickbloxClient.ChatXmppClient.OnContactsChanged += async (obj, args) => await Helpers.RunOnTheUiThread(ReloadLocalSearchResults);
+            await ReloadLocalSearchResults();
         }
 
         #endregion
 
         #region Private methods
+
+        private async Task ReloadLocalSearchResults()
+        {
+            await LocalSearch("");
+        }
 
         private async void Search(string searchQuery)
         {
