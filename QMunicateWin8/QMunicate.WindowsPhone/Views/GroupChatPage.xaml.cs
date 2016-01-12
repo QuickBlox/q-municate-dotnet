@@ -49,5 +49,10 @@ namespace QMunicate.Views
                 viewModel.SendCommand.Execute(null);
             }
         }
+
+        private void MessagesListView_OnPointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            Page.Focus(FocusState.Programmatic);
+        }
     }
 }

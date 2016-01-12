@@ -58,7 +58,7 @@
         <ListView Grid.Row="2" ItemsSource="{Binding Source={StaticResource groupedMessagesSource}}"
                  ItemTemplateSelector="{StaticResource MessageTemplateSelector}"
                  ItemContainerStyle="{StaticResource ListViewItemStrechedStyle}"
-                 Background="Transparent" SelectionMode="None">
+                 Background="Transparent" SelectionMode="None" PointerEntered="MessagesListView_OnPointerEntered">
             <ListView.GroupStyle>
                 <GroupStyle HeaderTemplate="{StaticResource MessagesGroupDateHeader}" HeaderContainerStyle="{StaticResource ListViewHeaderItemStrechedStyle}" />
             </ListView.GroupStyle>
@@ -75,7 +75,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <TextBox Text="{Binding NewMessageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     KeyDown="TextBox_OnKeyDown" Height="120" TextWrapping="Wrap" PlaceholderText="Message"
+                     KeyDown="TextBox_OnKeyDown" Height="120" TextWrapping="Wrap" PlaceholderText="Message" 
                      Background="White" BorderBrush="White" Margin="{StaticResource DefaultMargin}" IsEnabled="{Binding IsMessageSendingAllowed}"/>
             <Button x:Name="SendButton" Grid.Column="1" VerticalAlignment="Top"
                     Command="{Binding SendCommand}" BorderThickness="0"  Style="{StaticResource ContentButtonStyle}">
