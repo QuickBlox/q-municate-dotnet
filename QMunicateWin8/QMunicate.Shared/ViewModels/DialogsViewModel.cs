@@ -102,8 +102,12 @@ namespace QMunicate.ViewModels
         private async Task LoadDialogs()
         {
             var dialogsManager = ServiceLocator.Locator.Get<IDialogsManager>();
-            if(!dialogsManager.Dialogs.Any()) await dialogsManager.ReloadDialogs();
-            dialogsManager.JoinAllGroupDialogs();
+            if (!dialogsManager.Dialogs.Any())
+            {
+                await dialogsManager.ReloadDialogs();
+            }
+
+            await dialogsManager.UpdateDialogsStates();
         }
 
         #region Push notifications

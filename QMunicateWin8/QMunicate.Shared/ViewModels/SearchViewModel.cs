@@ -150,6 +150,7 @@ namespace QMunicate.ViewModels
 
         private async Task LocalSearch(string searchQuery)
         {
+            IsLoading = true;
             using (await localResultsLock.LockAsync())
             {
                 LocalResults.Clear();
@@ -284,6 +285,7 @@ namespace QMunicate.ViewModels
                 {
                     foreach (UserResponse item in response.Result.Items.Where(i => i.User.Id != currentUserId))
                     {
+                        ServiceLocator.Locator.Get<ICachingQuickbloxClient>().ManuallyUpdateUserInCache(item.User);
                         GlobalResults.Add(UserViewModel.FromUser(item.User));
                     }
                 }

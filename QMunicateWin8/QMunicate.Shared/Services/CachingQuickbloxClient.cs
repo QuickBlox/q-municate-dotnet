@@ -11,6 +11,7 @@ namespace QMunicate.Services
     {
         Task<User> GetUserById(int userId);
         void DeleteUserFromCacheById(int userId);
+        void ManuallyUpdateUserInCache(User user);
         void ClearUsersCache();
     }
 
@@ -63,6 +64,16 @@ namespace QMunicate.Services
             lock (usersLock)
             {
                 users.RemoveAll(u => u.Id == userId);
+            }
+        }
+
+        public void ManuallyUpdateUserInCache(User user)
+        {
+            DeleteUserFromCacheById(user.Id);
+
+            lock (usersLock)
+            {
+                users.Add(user);
             }
         }
 
