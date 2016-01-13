@@ -11,6 +11,7 @@ using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using Newtonsoft.Json;
 using QMunicate.Core.Command;
 using QMunicate.Core.DependencyInjection;
 using QMunicate.Helper;
@@ -153,7 +154,14 @@ namespace QMunicate.ViewModels
             if (newImageBytes != null)
             {
                 var contentHelper = new ContentClientHelper(QuickbloxClient.ContentClient);
-                updateUserRequest.User.BlobId = await contentHelper.UploadPrivateImage(newImageBytes);
+                var imageUploadResult = await contentHelper.UploadPublicImage(newImageBytes);
+                if (imageUploadResult != null)
+                {
+                    var customData = new CustomData { AvatarUrl = imageUploadResult.Url, IsImport = "1" };
+                    var customDataJson = JsonConvert.SerializeObject(customData);
+                    updateUserRequest.User.BlobId = imageUploadResult.BlodId;
+                    updateUserRequest.User.CustomData = customDataJson;
+                }
             }
 
             var updateUserResponse = await QuickbloxClient.UsersClient.UpdateUserAsync(currentUser.Id, updateUserRequest);

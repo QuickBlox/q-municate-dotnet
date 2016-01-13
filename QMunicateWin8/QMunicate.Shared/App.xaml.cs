@@ -60,7 +60,8 @@ namespace QMunicate
             ServiceLocator.Locator.Bind<IFileStorage, IFileStorage>(fileStorage);
             ServiceLocator.Locator.Bind<IImageService, IImageService>(new ImagesService(quickbloxClient, fileStorage));
             ServiceLocator.Locator.Bind<ICachingQuickbloxClient, ICachingQuickbloxClient>(new CachingQuickbloxClient(quickbloxClient));
-            
+            ServiceLocator.Locator.Bind<ICredentialsService, CredentialsService>(LifetimeMode.Singleton);
+
             UnhandledException += OnUnhandledException;
 
             this.InitializeComponent();
@@ -168,31 +169,15 @@ namespace QMunicate
 
         private async Task DoFirstNavigation(IQuickbloxClient quickbloxClient, INavigationService navigationService)
         {
-            string login = null;
-            string password = null;
+            Credentials credentials = ServiceLocator.Locator.Get<ICredentialsService>().GetSavedCredentials();
 
-            try
+            if (credentials != null)
             {
-                var passwordVault = new PasswordVault();
-                var credentials = passwordVault.FindAllByResource(ApplicationKeys.QMunicateCredentials);
-                if (credentials != null && credentials.Any())
-                {
-                    credentials[0].RetrievePassword();
-                    login = credentials[0].UserName;
-                    password = credentials[0].Password;
-                }
-            }
-            catch (Exception)
-            {
-            }
-
-            if (!string.IsNullOrEmpty(login) && !string.IsNullOrEmpty(password))
-            {
-                var response = await quickbloxClient.AuthenticationClient.CreateSessionWithEmailAsync(login, password,
+                var response = await quickbloxClient.AuthenticationClient.CreateSessionWithEmailAsync(credentials.Login, credentials.Password,
                         deviceRequestRequest: new DeviceRequest() { Platform = Platform.windows_phone, Udid = Helpers.GetHardwareId() });
                 if (response.StatusCode == HttpStatusCode.Created)
                 {
-                    navigationService.Navigate(ViewLocator.Dialogs, new DialogsNavigationParameter { CurrentUserId = response.Result.Session.UserId, Password = password });
+                    navigationService.Navigate(ViewLocator.Dialogs, new DialogsNavigationParameter { CurrentUserId = response.Result.Session.UserId, Password = credentials.Password });
                     return;
                 }
             }

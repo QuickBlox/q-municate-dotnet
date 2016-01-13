@@ -59,7 +59,7 @@
     </i:Interaction.Behaviors>
     <Page.BottomAppBar>
         <CommandBar Background="{StaticResource AppBarBrush}">
-            <AppBarButton Label="new message" Command="{Binding NewMessageCommand}">
+            <AppBarButton Label="new" Command="{Binding NewMessageCommand}">
                 <AppBarButton.Icon>
                     <SymbolIcon Symbol="Add" Foreground="White"/>
                 </AppBarButton.Icon>

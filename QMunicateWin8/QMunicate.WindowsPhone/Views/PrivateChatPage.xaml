@@ -60,7 +60,7 @@
         <ListView Grid.Row="2" ItemsSource="{Binding Source={StaticResource groupedMessagesSource}}"
                  ItemTemplateSelector="{StaticResource MessageTemplateSelector}"
                  ItemContainerStyle="{StaticResource ListViewItemStrechedStyle}"
-                 Background="Transparent" SelectionMode="None">
+                 Background="Transparent" SelectionMode="None" PointerEntered="MessagesListView_OnPointerEntered">
             <ListView.GroupStyle>
                 <GroupStyle HeaderTemplate="{StaticResource MessagesGroupDateHeader}" HeaderContainerStyle="{StaticResource ListViewHeaderItemStrechedStyle}" />
             </ListView.GroupStyle>

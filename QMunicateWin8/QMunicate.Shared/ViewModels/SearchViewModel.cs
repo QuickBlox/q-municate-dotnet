@@ -12,6 +12,8 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Navigation;
 using QMunicate.Core.AsyncLock;
 using QMunicate.Services;
@@ -85,12 +87,18 @@ namespace QMunicate.ViewModels
 
         public override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            await LocalSearch("");
+            QuickbloxClient.ChatXmppClient.OnContactsChanged += async (obj, args) => await Helpers.RunOnTheUiThread(ReloadLocalSearchResults);
+            await ReloadLocalSearchResults();
         }
 
         #endregion
 
         #region Private methods
+
+        private async Task ReloadLocalSearchResults()
+        {
+            await LocalSearch("");
+        }
 
         private async void Search(string searchQuery)
         {
@@ -142,6 +150,7 @@ namespace QMunicate.ViewModels
 
         private async Task LocalSearch(string searchQuery)
         {
+            IsLoading = true;
             using (await localResultsLock.LockAsync())
             {
                 LocalResults.Clear();
@@ -154,15 +163,20 @@ namespace QMunicate.ViewModels
                 }
                 else
                 {
-                    foreach (Contact contact in QuickbloxClient.ChatXmppClient.Contacts.Where(c => !string.IsNullOrEmpty(c.Name) && c.Name.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0))
+                    foreach (Contact contact in QuickbloxClient.ChatXmppClient.Contacts)
                     {
-                        LocalResults.Add(UserViewModel.FromContact(contact));
+                        var user = await ServiceLocator.Locator.Get<ICachingQuickbloxClient>().GetUserById(contact.UserId);
+                        if (user != null && user.FullName.IndexOf(searchQuery, StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            LocalResults.Add(UserViewModel.FromContact(contact));
+                        }
                     }
                 }
 
                 await FixLocalResultsNames();
                 await LoadLocalResultsImages();
             }
+            IsLoading = false;
         }
 
         /// <summary>
@@ -271,6 +285,7 @@ namespace QMunicate.ViewModels
                 {
                     foreach (UserResponse item in response.Result.Items.Where(i => i.User.Id != currentUserId))
                     {
+                        ServiceLocator.Locator.Get<ICachingQuickbloxClient>().ManuallyUpdateUserInCache(item.User);
                         GlobalResults.Add(UserViewModel.FromUser(item.User));
                     }
                 }

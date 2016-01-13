@@ -9,6 +9,7 @@ using QMunicate.Core.DependencyInjection;
 using QMunicate.Core.MessageService;
 using QMunicate.Helper;
 using QMunicate.Models;
+using QMunicate.Services;
 using Quickblox.Sdk;
 using Quickblox.Sdk.GeneralDataModel.Models;
 
@@ -30,6 +31,8 @@ namespace QMunicate.ViewModels
         {
             ForgotPasswordCommand = new RelayCommand(ForgotPasswordCommandExecute, () => !IsLoading);
             LoginCommand = new RelayCommand(LoginCommandExecute, () => !IsLoading);
+
+            RememberMe = true;
 #if DEBUG
             Email = "user1@test.com";
             Password = "12345678";
@@ -101,9 +104,11 @@ namespace QMunicate.ViewModels
 
             if (RememberMe)
             {
-                var passwordVault = new PasswordVault();
-                var credentials = new PasswordCredential(ApplicationKeys.QMunicateCredentials, Email, Password);
-                passwordVault.Add(credentials);
+                ServiceLocator.Locator.Get<ICredentialsService>().SaveCredentials(new Credentials {Login = Email, Password = Password});
+            }
+            else
+            {
+                ServiceLocator.Locator.Get<ICredentialsService>().DeleteSavedCredentials();
             }
 
             var response = await QuickbloxClient.AuthenticationClient.CreateSessionWithEmailAsync(Email, Password,

@@ -44,12 +44,12 @@ namespace QMunicate.ViewModels.PartialViewModels
         public string XmppRoomJid { get; set; }
 
         /// <summary>
-        /// Photo url (for group dialogs)
+        /// Photo url
         /// </summary>
         public string Photo { get; set; }
 
         /// <summary>
-        /// BlobId (for private dialogs)
+        /// Photo Blob Id (is used to retrieve photo when Photo property is not set)
         /// </summary>
         public int? PrivatePhotoId { get; set; }
         public int? UnreadMessageCount { get; set; }

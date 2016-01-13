@@ -102,14 +102,21 @@ namespace QMunicate.ViewModels
         private async Task LoadDialogs()
         {
             var dialogsManager = ServiceLocator.Locator.Get<IDialogsManager>();
-            if(!dialogsManager.Dialogs.Any()) await dialogsManager.ReloadDialogs();
-            dialogsManager.JoinAllGroupDialogs();
+            if (!dialogsManager.Dialogs.Any())
+            {
+                await dialogsManager.ReloadDialogs();
+            }
+
+            await dialogsManager.UpdateDialogsStates();
         }
 
         #region Push notifications
 
         private async Task InitializePush()
         {
+            var savedCredentials = ServiceLocator.Locator.Get<ICredentialsService>().GetSavedCredentials();
+            if (savedCredentials == null) return; // subscribing for push notifications only if a user has selected "Remember me"
+
             var pushChannel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
             pushChannel.PushNotificationReceived += PushChannelOnPushNotificationReceived;
 

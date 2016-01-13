@@ -42,7 +42,7 @@
     </interactivity:Interaction.Behaviors>
     <Page.BottomAppBar>
         <CommandBar Background="{StaticResource AppBarBrush}">
-            <AppBarButton Label="add members" Command="{Binding AddMembersCommand}">
+            <AppBarButton Label="add" Command="{Binding AddMembersCommand}">
                 <AppBarButton.Icon>
                     <SymbolIcon Symbol="Add" Foreground="White"/>
                 </AppBarButton.Icon>

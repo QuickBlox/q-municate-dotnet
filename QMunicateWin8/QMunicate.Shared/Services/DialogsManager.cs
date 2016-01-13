@@ -5,6 +5,8 @@ using System.Net;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
+using Windows.UI.StartScreen;
+using Newtonsoft.Json;
 using QMunicate.Core.DependencyInjection;
 using QMunicate.Core.Logger;
 using QMunicate.Helper;
@@ -16,14 +18,36 @@ using Quickblox.Sdk.Modules.ChatModule.Models;
 using Quickblox.Sdk.Modules.ChatModule.Requests;
 using Quickblox.Sdk.Modules.ChatXmppModule.Models;
 using Quickblox.Sdk.Modules.Models;
+using Quickblox.Sdk.Modules.UsersModule.Models;
 
 namespace QMunicate.Services
 {
     public interface IDialogsManager
     {
+        /// <summary>
+        /// Dialogs collection
+        /// </summary>
         ObservableCollection<DialogViewModel> Dialogs { get; }
+
+        /// <summary>
+        /// Reloads all dialogs from server
+        /// </summary>
+        /// <returns></returns>
         Task ReloadDialogs();
-        void JoinAllGroupDialogs();
+
+        /// <summary>
+        /// Checks for dialogs updates (private chat names and images)
+        /// </summary>
+        /// <returns></returns>
+        Task UpdateDialogsStates();
+
+        /// <summary>
+        /// Updates last activity information for a specific dialog
+        /// </summary>
+        /// <param name="dialogId"></param>
+        /// <param name="lastActivity"></param>
+        /// <param name="lastMessageSent"></param>
+        /// <returns></returns>
         Task UpdateDialogLastMessage(string dialogId, string lastActivity, DateTime lastMessageSent);
     }
 
@@ -34,7 +58,6 @@ namespace QMunicate.Services
         private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime();
 
         private bool isReloadingDialogs;
-        private bool areAllGroupDialogsJoined;
         private readonly IQuickbloxClient quickbloxClient;
 
         #endregion
@@ -85,8 +108,8 @@ namespace QMunicate.Services
                         Dialogs.Add(dialogVm);
                     }
 
-                    await FixPrivateDialogsNamesAndImages();
-                    await LoadDialogImages(100);
+                    JoinAllGroupDialogs();
+                    await UpdateDialogsStates();
                 }
             }
             finally
@@ -95,22 +118,10 @@ namespace QMunicate.Services
             }
         }
 
-        public void JoinAllGroupDialogs()
+        public async Task UpdateDialogsStates()
         {
-            if (areAllGroupDialogsJoined) return;
-
-            int currentUserId = SettingsManager.Instance.ReadFromSettings<int>(SettingsKeys.CurrentUserId);
-
-            foreach (DialogViewModel dialogVm in Dialogs)
-            {
-                if (dialogVm.DialogType == DialogType.Group)
-                {
-                    var groupChatManager = quickbloxClient.ChatXmppClient.GetGroupChatManager(dialogVm.XmppRoomJid, dialogVm.Id);
-                    groupChatManager.JoinGroup(currentUserId.ToString());
-                }
-            }
-
-            areAllGroupDialogsJoined = true;
+            await FixPrivateDialogsNamesAndImages();
+            await LoadDialogImages(100);
         }
 
         public async Task UpdateDialogLastMessage(string dialogId, string lastActivity, DateTime lastMessageSent)
@@ -127,12 +138,10 @@ namespace QMunicate.Services
                 int itemIndex = Dialogs.IndexOf(dialog);
                 Dialogs.Move(itemIndex, 0);
             }
-            else // This is depricated now. We use Quickblox System messages instead. Left for backward compatibility
+            else // This is depricated now. We use Quickblox System messages instead. Left for backward compatibility (can be deleted)
             {
                 await QmunicateLoggerHolder.Log(QmunicateLogLevel.Warn, "The dialog wasn't found in DialogsManager. Reloading dialogs.");
                 await ReloadDialogs();
-                areAllGroupDialogsJoined = false;
-                JoinAllGroupDialogs();
             }
 
         }
@@ -188,6 +197,20 @@ namespace QMunicate.Services
             Dialogs.Insert(0, dialogViewModel);
         }
 
+        private void JoinAllGroupDialogs()
+        {
+            int currentUserId = SettingsManager.Instance.ReadFromSettings<int>(SettingsKeys.CurrentUserId);
+
+            foreach (DialogViewModel dialogVm in Dialogs)
+            {
+                if (dialogVm.DialogType == DialogType.Group)
+                {
+                    var groupChatManager = quickbloxClient.ChatXmppClient.GetGroupChatManager(dialogVm.XmppRoomJid, dialogVm.Id);
+                    groupChatManager.JoinGroup(currentUserId.ToString());
+                }
+            }
+        }
+
         private async Task UpdateGroupDialog(Message message)
         {
             var updatedDialog = Dialogs.FirstOrDefault(d => d.Id == message.ChatDialogId);
@@ -238,6 +261,11 @@ namespace QMunicate.Services
                 {
                     dialogVm.Name = user.FullName;
                     dialogVm.PrivatePhotoId = user.BlobId;
+                    if (!string.IsNullOrEmpty(user.CustomData))
+                    {
+                        var customData = JsonConvert.DeserializeObject<CustomData>(user.CustomData);
+                        if(customData != null) dialogVm.Photo = customData.AvatarUrl;
+                    }
                 }
             }
         }
@@ -246,18 +274,22 @@ namespace QMunicate.Services
         {
             var imagesService = ServiceLocator.Locator.Get<IImageService>();
 
-            foreach (DialogViewModel dialogVm in Dialogs.Where(dvm => dvm.DialogType == DialogType.Group))
+            foreach (DialogViewModel dialogVm in Dialogs.Where(d => !string.IsNullOrEmpty(d.Photo)))
             {
                 dialogVm.Image = await imagesService.GetPublicImage(dialogVm.Photo);
             }
 
-            Parallel.ForEach(Dialogs.Where(d => d.DialogType == DialogType.Private), async (dialogVm, state) =>
+            Parallel.ForEach(Dialogs.Where(d => string.IsNullOrEmpty(d.Photo) && d.PrivatePhotoId.HasValue), async (dialogVm, state) =>
             {
                 if (dialogVm.PrivatePhotoId.HasValue)
                 {
                     var imageBytes = await imagesService.GetPrivateImageBytes(dialogVm.PrivatePhotoId.Value);
-                    CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+                    if(imageBytes != null)
+                    {
+                        await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
                         dialogVm.Image = await ImageHelper.CreateBitmapImage(imageBytes, decodePixelWidth, decodePixelHeight));
+                    }
+                    
                 }
             });
         }
