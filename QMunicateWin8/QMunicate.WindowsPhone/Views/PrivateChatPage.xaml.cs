@@ -52,7 +52,17 @@ namespace QMunicate.Views
 
         private void MessagesListView_OnPointerEntered(object sender, PointerRoutedEventArgs e)
         {
-            Page.Focus(FocusState.Programmatic);
+            LoseFocus(NewMessageTextBox);
         }
+
+        private void LoseFocus(Control control)
+        {
+            var isTabStop = control.IsTabStop;
+            control.IsTabStop = false;
+            control.IsEnabled = false;
+            control.IsEnabled = true;
+            control.IsTabStop = isTabStop;
+        }
+
     }
 }

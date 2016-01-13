@@ -64,7 +64,7 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox Text="{Binding NewMessageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="120" TextWrapping="Wrap" PlaceholderText="Message"
+            <TextBox x:Name="NewMessageTextBox" Text="{Binding NewMessageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="120" TextWrapping="Wrap" PlaceholderText="Message"
                      KeyDown="TextBox_OnKeyDown" Background="White" BorderBrush="White" Margin="{StaticResource DefaultMargin}"/>
             <Button x:Name="SendButton" Grid.Column="1" VerticalAlignment="Top" Command="{Binding SendCommand}" BorderThickness="0"  Style="{StaticResource ContentButtonStyle}">
                 <Button.Content>
