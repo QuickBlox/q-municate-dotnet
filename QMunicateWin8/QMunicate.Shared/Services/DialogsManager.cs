@@ -97,6 +97,8 @@ namespace QMunicate.Services
                     var currentUserId = SettingsManager.Instance.ReadFromSettings<int>(SettingsKeys.CurrentUserId);
                     foreach (var dialog in response.Result.Items)
                     {
+                        if (dialog.Type == DialogType.PublicGroup) continue;
+
                         var dialogVm = DialogViewModel.FromDialog(dialog);
 
                         if (dialog.Type == DialogType.Private)
