@@ -68,5 +68,13 @@ namespace QMunicate.Helper
                 await action();
             });
         }
+
+        public static async Task RunOnTheUiThread(Action action)
+        {
+            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                action();
+            });
+        }
     }
 }

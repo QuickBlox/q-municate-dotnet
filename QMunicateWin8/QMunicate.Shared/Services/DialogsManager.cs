@@ -69,6 +69,7 @@ namespace QMunicate.Services
             this.quickbloxClient = quickbloxClient;
             quickbloxClient.ChatXmppClient.OnMessageReceived += MessagesClientOnOnMessageReceived;
             quickbloxClient.ChatXmppClient.OnSystemMessageReceived += MessagesClientOnOnSystemMessageReceived;
+            quickbloxClient.ChatXmppClient.OnContactRemoved += ChatXmppClientOnOnContactRemoved;
             Dialogs = new ObservableCollection<DialogViewModel>();
         }
 
@@ -173,6 +174,20 @@ namespace QMunicate.Services
                     await OnGroupInfoMessage(groupInfoMessage);
                 }
             });
+        }
+
+        private async void ChatXmppClientOnOnContactRemoved(object sender, Contact contact)
+        {
+            var currentUserId = SettingsManager.Instance.ReadFromSettings<int>(SettingsKeys.CurrentUserId);
+            foreach (var dialogVm in Dialogs.Where(d => d.DialogType == DialogType.Private))
+            {
+                int otherUserId = dialogVm.OccupantIds.FirstOrDefault(o => o != currentUserId);
+                if (otherUserId == contact.UserId)
+                {
+                    await Helpers.RunOnTheUiThread(()=> Dialogs.Remove(dialogVm));
+                    break;
+                }
+            }
         }
 
         private async Task OnGroupInfoMessage(GroupInfoMessage groupInfoMessage)
