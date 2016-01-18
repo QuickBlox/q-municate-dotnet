@@ -9,6 +9,7 @@ using Quickblox.Sdk;
 using Quickblox.Sdk.GeneralDataModel.Models;
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
@@ -301,7 +302,7 @@ namespace QMunicate.ViewModels
 
             NotifyPausedTyping();
 
-            bool isMessageSent = privateChatManager.SendMessage(NewMessageText);
+            bool isMessageSent = privateChatManager.SendMessage(WebUtility.HtmlEncode(NewMessageText));
 
             if (!isMessageSent)
             {

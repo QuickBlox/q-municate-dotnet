@@ -136,7 +136,7 @@ namespace QMunicate.Services
             {
                 if (string.IsNullOrEmpty(lastActivity) && lastMessageSent == UnixEpoch) return;
 
-                dialog.LastActivity = lastActivity;
+                dialog.LastActivity = WebUtility.HtmlDecode(lastActivity);
                 dialog.LastMessageSent = lastMessageSent;
                 int itemIndex = Dialogs.IndexOf(dialog);
                 Dialogs.Move(itemIndex, 0);

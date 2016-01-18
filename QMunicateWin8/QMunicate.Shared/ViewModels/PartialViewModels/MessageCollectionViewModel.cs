@@ -1,4 +1,5 @@
-﻿using QMunicate.Core.DependencyInjection;
+﻿using System;
+using QMunicate.Core.DependencyInjection;
 using QMunicate.Core.Observable;
 using QMunicate.Services;
 using Quickblox.Sdk;
@@ -262,7 +263,7 @@ namespace QMunicate.ViewModels.PartialViewModels
         {
             var messageViewModel = new MessageViewModel
             {
-                MessageText = message.MessageText,
+                MessageText = WebUtility.HtmlDecode(message.MessageText),
                 DateTime = message.DateSent.ToDateTime(),
                 NotificationType = message.NotificationType,
                 SenderId = message.SenderId
