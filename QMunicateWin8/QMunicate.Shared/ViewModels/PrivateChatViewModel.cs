@@ -379,7 +379,7 @@ namespace QMunicate.ViewModels
             {
                 Id = imageUploadResult.BlodId.ToString(),
                 Url = imageUploadResult.Url,
-                Type = "photo"
+                Type = "image"
             };
 
             privateChatManager.SendAttachemnt(attachment);
