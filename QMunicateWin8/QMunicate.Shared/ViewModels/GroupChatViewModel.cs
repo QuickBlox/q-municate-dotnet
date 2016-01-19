@@ -8,6 +8,7 @@ using Quickblox.Sdk;
 using Quickblox.Sdk.GeneralDataModel.Models;
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
@@ -140,7 +141,7 @@ namespace QMunicate.ViewModels
         {
             if (string.IsNullOrWhiteSpace(NewMessageText)) return;
 
-            bool isMessageSent = groupChatManager.SendMessage(NewMessageText);
+            bool isMessageSent = groupChatManager.SendMessage(WebUtility.HtmlEncode(NewMessageText));
 
             if (!isMessageSent)
             {

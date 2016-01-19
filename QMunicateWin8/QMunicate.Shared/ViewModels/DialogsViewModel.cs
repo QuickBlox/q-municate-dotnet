@@ -95,6 +95,7 @@ namespace QMunicate.ViewModels
             if (!QuickbloxClient.ChatXmppClient.IsConnected)
             {
                 await QuickbloxClient.ChatXmppClient.Connect(userId, password);
+                QuickbloxClient.ChatXmppClient.EnableMessageCarbons();
                 QuickbloxClient.ChatXmppClient.ReloadContacts();
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using Windows.UI.Xaml.Media;
 using QMunicate.Core.Observable;
 using Quickblox.Sdk.Builder;
@@ -29,7 +30,7 @@ namespace QMunicate.ViewModels.PartialViewModels
             LastMessageSent = dialog.LastMessageDateSent.HasValue
                 ? dialog.LastMessageDateSent.Value.ToDateTime()
                 : (DateTime?) null;
-            LastActivity = dialog.LastMessage;
+            LastActivity = WebUtility.HtmlDecode(dialog.LastMessage);
             UnreadMessageCount = dialog.UnreadMessagesCount;
             OccupantIds = dialog.OccupantsIds;
             DialogType = dialog.Type;

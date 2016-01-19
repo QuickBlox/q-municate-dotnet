@@ -264,7 +264,7 @@ namespace QMunicate.ViewModels.PartialViewModels
         {
             var messageViewModel = new MessageViewModel
             {
-                MessageText = message.MessageText,
+                MessageText = WebUtility.HtmlDecode(message.MessageText),
                 DateTime = message.DateSent.ToDateTime(),
                 NotificationType = message.NotificationType,
                 SenderId = message.SenderId
