@@ -29,7 +29,6 @@ namespace QMunicate.Views
         public GroupChatPage()
         {
             this.InitializeComponent();
-            SendButton.IsTabStop = false;
             viewModel = this.DataContext as GroupChatViewModel;
         }
 
