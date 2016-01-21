@@ -138,7 +138,7 @@ namespace QMunicate.ViewModels
                     dataReader.ReadBytes(newImageBytes);
                 }
 
-                var contentHelper = new ContentClientHelper(QuickbloxClient.ContentClient);
+                var contentHelper = new ContentClientHelper(QuickbloxClient);
                 var imageUploadResult = await contentHelper.UploadPublicImage(newImageBytes);
                 if (imageUploadResult != null)
                 {
