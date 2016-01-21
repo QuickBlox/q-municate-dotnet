@@ -210,7 +210,7 @@ namespace QMunicate.ViewModels
 
         private async Task UploadUserImage(User user, byte[] imageBytes)
         {
-            var contentHelper = new ContentClientHelper(QuickbloxClient.ContentClient);
+            var contentHelper = new ContentClientHelper(QuickbloxClient);
             var imageUploadResult = await contentHelper.UploadPublicImage(imageBytes);
             if (imageUploadResult == null)
             {
