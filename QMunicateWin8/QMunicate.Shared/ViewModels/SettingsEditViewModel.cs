@@ -153,7 +153,7 @@ namespace QMunicate.ViewModels
 
             if (newImageBytes != null)
             {
-                var contentHelper = new ContentClientHelper(QuickbloxClient.ContentClient);
+                var contentHelper = new ContentClientHelper(QuickbloxClient);
                 var imageUploadResult = await contentHelper.UploadPublicImage(newImageBytes);
                 if (imageUploadResult != null)
                 {

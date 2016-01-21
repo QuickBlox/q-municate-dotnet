@@ -277,7 +277,7 @@ namespace QMunicate.ViewModels
             string imageLink = null;
             if (chatImageBytes != null)
             {
-                var contentHelper = new ContentClientHelper(QuickbloxClient.ContentClient);
+                var contentHelper = new ContentClientHelper(QuickbloxClient);
                 imageLink = (await contentHelper.UploadPublicImage(chatImageBytes))?.Url;
             }
 

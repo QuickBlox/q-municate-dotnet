@@ -141,7 +141,7 @@ namespace QMunicate.ViewModels
 
             if (newImageBytes != null)
             {
-                var contentHelper = new ContentClientHelper(QuickbloxClient.ContentClient);
+                var contentHelper = new ContentClientHelper(QuickbloxClient);
                 updateDialogRequest.PhotoLink = (await contentHelper.UploadPublicImage(newImageBytes))?.Url;
             }
 
