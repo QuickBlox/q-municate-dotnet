@@ -196,10 +196,11 @@ namespace QMunicate.ViewModels
                 }
 
                 var contentHelper = new ContentClientHelper(QuickbloxClient);
-                var imageUploadResult = await contentHelper.UploadPublicImage(newImageBytes);
-                if (imageUploadResult != null)
+                var blobUploadInfo = await contentHelper.UploadImage(newImageBytes, false);
+                if (blobUploadInfo != null)
                 {
-                    await SendAttachment(imageUploadResult);
+                    var imageUrl = contentHelper.GenerateImageUrl(blobUploadInfo.UId, blobUploadInfo.IsPublic);
+                    await SendAttachment(blobUploadInfo, imageUrl);
                 }
             }
             IsLoading = false;
@@ -372,14 +373,14 @@ namespace QMunicate.ViewModels
 #endif
         }
 
-        private async Task SendAttachment(ImageUploadResult imageUploadResult)
+        private async Task SendAttachment(BlobUploadInfo blobUploadInfo, string imageUrl)
         {
-            if (string.IsNullOrEmpty(imageUploadResult.Url) || imageUploadResult.BlodId == 0) return;
+            if (string.IsNullOrEmpty(blobUploadInfo.UId))
+                return;
 
             var attachment = new AttachmentTag
             {
-                Id = imageUploadResult.BlodId.ToString(),
-                Url = imageUploadResult.Url,
+                Id = blobUploadInfo.UId,
                 Type = "image"
             };
 
@@ -387,7 +388,7 @@ namespace QMunicate.ViewModels
 
             var messageViewModel = new MessageViewModel()
             {
-                AttachedImage = new BitmapImage(new Uri(imageUploadResult.Url)),
+                AttachedImage = new BitmapImage(new Uri(imageUrl)),
                 MessageType = MessageType.Outgoing,
                 DateTime = DateTime.Now
             };
