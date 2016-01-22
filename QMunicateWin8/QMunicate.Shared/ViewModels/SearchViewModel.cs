@@ -174,6 +174,7 @@ namespace QMunicate.ViewModels
                 }
 
                 await FixLocalResultsNames();
+                SetPresences();
                 await LoadLocalResultsImages();
             }
             IsLoading = false;
@@ -212,6 +213,14 @@ namespace QMunicate.ViewModels
                 {
                     userVm.FullName = user.FullName;
                 }
+            }
+        }
+
+        private void SetPresences()
+        {
+            foreach (var localResult in LocalResults)
+            {
+                localResult.IsOnline = QuickbloxClient.ChatXmppClient.Presences.Any(p => p.UserId == localResult.UserId);
             }
         }
 

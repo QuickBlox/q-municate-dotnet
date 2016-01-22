@@ -23,8 +23,11 @@
             <StackPanel Orientation="Horizontal" tapListener:TapListener.TapCommand="{Binding DataContext.OpenLocalCommand, ElementName=Page}"
                               tapListener:TapListener.TapCommandParameter="{Binding }">
                 <Image Source="{Binding Image, TargetNullValue=../Assets/AvatarPlaceholder.png}" Width="55" Height="55" Margin="0 0 12 0"/>
-                <controls:SelectionsTextBlock Text="{Binding FullName}" SelectionText="{Binding Text, ElementName=SearchTextBox}" SelectionColor="DodgerBlue"
+                <StackPanel>
+                    <controls:SelectionsTextBlock Text="{Binding FullName}" SelectionText="{Binding Text, ElementName=SearchTextBox}" SelectionColor="DodgerBlue"
                                               FontSize="{StaticResource NormalFontSize}" VerticalAlignment="Center"/>
+                    <TextBlock Text="online" Foreground="Gray" FontSize="{StaticResource SmallFontSize}" Visibility="{Binding IsOnline, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </StackPanel>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="GlobalUserTemplate">

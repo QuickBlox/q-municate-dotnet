@@ -11,6 +11,7 @@ namespace QMunicate.ViewModels.PartialViewModels
 
         private ImageSource image;
         private string fullName;
+        private bool isOnline;
 
         #endregion
 
@@ -51,6 +52,12 @@ namespace QMunicate.ViewModels.PartialViewModels
         {
             get { return image; }
             set { Set(ref image, value); }
+        }
+
+        public bool IsOnline
+        {
+            get { return isOnline; }
+            set { Set(ref isOnline, value); }
         }
 
         #endregion
