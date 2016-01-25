@@ -10,6 +10,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:tapListener="using:QMunicate.Core.TapListener"
     xmlns:controls="using:QMunicate.Controls"
+    xmlns:converters="using:QMunicate.Converters"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     RequestedTheme="Light"
@@ -17,6 +18,8 @@
     x:Name="Page">
 
     <Page.Resources>
+        <converters:HandyDateConverter x:Key="HandyDateConverter" />
+
         <selectors:MessageTemplateSelector x:Key="MessageTemplateSelector"
                                        NotificationMessageTemplate="{StaticResource NotificationMessageTemplate}"
                                        IncomingMessageTemplate="{StaticResource IncomingMessageTemlate}"
@@ -35,12 +38,21 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" tapListener:TapListener.TapCommand="{Binding ShowUserInfoCommand}">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="{Binding ChatName}" FontSize="{StaticResource LargeFontSize}" Margin="{StaticResource DefaultMargin}"/>
-            <Image Grid.Column="1" Source="{Binding ChatImage, TargetNullValue=../Assets/AvatarPlaceholder.png}" Width="55" Height="55"  HorizontalAlignment="Right" Margin="0 0 12 0"/>
+            <TextBlock Text="{Binding ChatName}" FontSize="{StaticResource LargeFontSize}" Margin="12 12 12 0"/>
+            <TextBlock Grid.Row="1" Text="online" Margin="{StaticResource DefaultHorizontalMargin}" Foreground="Gray" FontSize="{StaticResource NormalFontSize}" Visibility="{Binding IsOnline, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="{StaticResource DefaultHorizontalMargin}" Visibility="{Binding IsOnline, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                <TextBlock Text="last seen" Foreground="Gray" FontSize="{StaticResource NormalFontSize}" Margin="0 0 5 0" Visibility="{Binding IsLoading, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                <TextBlock Text="{Binding LastActive, Converter={StaticResource HandyDateConverter}}" Foreground="Gray" FontSize="{StaticResource NormalFontSize}" Visibility="{Binding IsLoading, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+            </StackPanel>
+            <Image Grid.Column="1" Grid.RowSpan="2" Source="{Binding ChatImage, TargetNullValue=../Assets/AvatarPlaceholder.png}" Width="55" Height="55"  HorizontalAlignment="Right" Margin="0 0 12 0"/>
         </Grid>
         <Grid Row="1" Visibility="{Binding IsActiveContactRequest, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Grid.RowDefinitions>
