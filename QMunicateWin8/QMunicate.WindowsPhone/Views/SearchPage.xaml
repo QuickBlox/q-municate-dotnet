@@ -9,6 +9,7 @@
     xmlns:behaviors="using:QMunicate.Behaviors"
     xmlns:controls="using:QMunicate.Controls"
     xmlns:tapListener="using:QMunicate.Core.TapListener"
+    xmlns:converters="using:QMunicate.Converters"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     RequestedTheme="Light"
@@ -18,6 +19,7 @@
     <Page.Resources>
         <x:String x:Key="LocalLabel">local</x:String>
         <x:String x:Key="GlobalLabel">global</x:String>
+        <converters:HandyDateConverter x:Key="HandyDateConverter" />
         
         <DataTemplate x:Key="LocalUserTemplate">
             <StackPanel Orientation="Horizontal" tapListener:TapListener.TapCommand="{Binding DataContext.OpenLocalCommand, ElementName=Page}"
@@ -27,6 +29,10 @@
                     <controls:SelectionsTextBlock Text="{Binding FullName}" SelectionText="{Binding Text, ElementName=SearchTextBox}" SelectionColor="DodgerBlue"
                                               FontSize="{StaticResource NormalFontSize}" VerticalAlignment="Center"/>
                     <TextBlock Text="online" Foreground="Gray" FontSize="{StaticResource SmallFontSize}" Visibility="{Binding IsOnline, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding IsOnline, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                        <TextBlock Text="last seen" Foreground="Gray" FontSize="{StaticResource SmallFontSize}" Margin="0 0 6 0" />
+                        <TextBlock Text="{Binding LastActive, Converter={StaticResource HandyDateConverter}}" Foreground="Gray" FontSize="{StaticResource SmallFontSize}"/>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </DataTemplate>

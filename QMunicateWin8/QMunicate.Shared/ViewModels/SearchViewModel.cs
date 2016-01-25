@@ -174,7 +174,7 @@ namespace QMunicate.ViewModels
                 }
 
                 await FixLocalResultsNames();
-                SetPresences();
+                await SetPresences();
                 await LoadLocalResultsImages();
             }
             IsLoading = false;
@@ -216,11 +216,17 @@ namespace QMunicate.ViewModels
             }
         }
 
-        private void SetPresences()
+        private async Task SetPresences()
         {
+            var cachingQbClient = ServiceLocator.Locator.Get<ICachingQuickbloxClient>();
             foreach (var localResult in LocalResults)
             {
-                localResult.IsOnline = QuickbloxClient.ChatXmppClient.Presences.Any(p => p.UserId == localResult.UserId);
+                localResult.IsOnline = QuickbloxClient.ChatXmppClient.Presences.Any(p => p.UserId == localResult.UserId && (p.PresenceType == PresenceType.None || p.PresenceType == PresenceType.Subscribed));
+                var user = await cachingQbClient.GetUserById(localResult.UserId);
+                if (user?.LastRequestAt != null)
+                {
+                    localResult.LastActive = user.LastRequestAt.Value;
+                }
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml.Media;
+﻿using System;
+using Windows.UI.Xaml.Media;
 using QMunicate.Core.Observable;
 using Quickblox.Sdk.Modules.ChatXmppModule.Models;
 using Quickblox.Sdk.Modules.UsersModule.Models;
@@ -12,6 +13,7 @@ namespace QMunicate.ViewModels.PartialViewModels
         private ImageSource image;
         private string fullName;
         private bool isOnline;
+        private DateTime lastActive;
 
         #endregion
 
@@ -58,6 +60,12 @@ namespace QMunicate.ViewModels.PartialViewModels
         {
             get { return isOnline; }
             set { Set(ref isOnline, value); }
+        }
+
+        public DateTime LastActive
+        {
+            get { return lastActive; }
+            set { Set(ref lastActive, value); }
         }
 
         #endregion
