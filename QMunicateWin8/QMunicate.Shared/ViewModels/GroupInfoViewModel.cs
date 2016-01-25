@@ -9,6 +9,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using QMunicate.Services;
 using QMunicate.ViewModels.PartialViewModels;
+using Quickblox.Sdk.Modules.ChatXmppModule.Models;
 
 namespace QMunicate.ViewModels
 {
@@ -104,6 +105,16 @@ namespace QMunicate.ViewModels
                 var user = await cachingQbClient.GetUserById(occupantId);
                 if (user != null)
                     Participants.Add(UserViewModel.FromUser(user));
+            }
+
+            foreach (var userViewModel in Participants)
+            {
+                userViewModel.IsOnline = QuickbloxClient.ChatXmppClient.Presences.Any(p => p.UserId == userViewModel.UserId && (p.PresenceType == PresenceType.None || p.PresenceType == PresenceType.Subscribed));
+                var user = await cachingQbClient.GetUserById(userViewModel.UserId);
+                if (user?.LastRequestAt != null)
+                {
+                    userViewModel.LastActive = user.LastRequestAt.Value;
+                }
             }
 
             foreach (UserViewModel userVm in Participants)
