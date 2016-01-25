@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Quickblox.Sdk;
+using Quickblox.Sdk.Modules.ChatXmppModule.Models;
 using Quickblox.Sdk.Modules.UsersModule.Models;
 
 namespace QMunicate.Services
@@ -30,6 +32,7 @@ namespace QMunicate.Services
         public CachingQuickbloxClient(IQuickbloxClient quickbloxClient)
         {
             this.quickbloxClient = quickbloxClient;
+            quickbloxClient.ChatXmppClient.OnPresenceReceived += ChatXmppClientOnOnPresenceReceived;
         }
 
         #endregion
@@ -87,5 +90,20 @@ namespace QMunicate.Services
 
         #endregion
 
+        #region Private methods
+
+        private void ChatXmppClientOnOnPresenceReceived(object sender, Presence presence)
+        {
+            lock (usersLock)
+            {
+                var userToUpdate = users.FirstOrDefault(u => u.Id == presence.UserId);
+                if (userToUpdate != null)
+                {
+                    userToUpdate.LastRequestAt = DateTime.Now;
+                }
+            }
+        }
+
+        #endregion
     }
 }
