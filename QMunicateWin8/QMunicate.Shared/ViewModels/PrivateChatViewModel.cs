@@ -153,7 +153,7 @@ namespace QMunicate.ViewModels
         {
             base.OnNavigatedFrom(e);
 
-            if (privateChatManager != null) privateChatManager.OnMessageReceived -= ChatManagerOnOnMessageReceived;
+            if (privateChatManager != null) privateChatManager.MessageReceived -= ChatManagerOnOnMessageReceived;
         }
 
         #endregion
@@ -193,9 +193,9 @@ namespace QMunicate.ViewModels
                 if (otherUserId != 0)
                 {
                     privateChatManager = QuickbloxClient.ChatXmppClient.GetPrivateChatManager(otherUserId, chatParameter.Dialog.Id);
-                    privateChatManager.OnMessageReceived += ChatManagerOnOnMessageReceived;
-                    privateChatManager.OnIsTyping += PrivateChatManagerOnOnIsTyping;
-                    privateChatManager.OnPausedTyping += PrivateChatManagerOnOnPausedTyping;
+                    privateChatManager.MessageReceived += ChatManagerOnOnMessageReceived;
+                    privateChatManager.OpponentStartedTyping += PrivateChatManagerOnOpponentStartedTyping;
+                    privateChatManager.OpponentPausedTyping += PrivateChatManagerOpponentOpponentPausedTyping;
                 }
                 
 
@@ -207,7 +207,7 @@ namespace QMunicate.ViewModels
 
         #region IsTyping functionality
 
-        private void PrivateChatManagerOnOnIsTyping(object sender, EventArgs eventArgs)
+        private void PrivateChatManagerOnOpponentStartedTyping(object sender, EventArgs eventArgs)
         {
             var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
             dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -219,7 +219,7 @@ namespace QMunicate.ViewModels
             });
         }
 
-        private void PrivateChatManagerOnOnPausedTyping(object sender, EventArgs eventArgs)
+        private void PrivateChatManagerOpponentOpponentPausedTyping(object sender, EventArgs eventArgs)
         {
             var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
             dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>

@@ -67,9 +67,9 @@ namespace QMunicate.Services
         public DialogsManager(IQuickbloxClient quickbloxClient)
         {
             this.quickbloxClient = quickbloxClient;
-            quickbloxClient.ChatXmppClient.OnMessageReceived += MessagesClientOnOnMessageReceived;
-            quickbloxClient.ChatXmppClient.OnSystemMessageReceived += MessagesClientOnOnSystemMessageReceived;
-            quickbloxClient.ChatXmppClient.OnContactRemoved += ChatXmppClientOnOnContactRemoved;
+            quickbloxClient.ChatXmppClient.MessageReceived += MessagesClientOnOnMessageReceived;
+            quickbloxClient.ChatXmppClient.SystemMessageReceived += MessagesClientOnOnSystemMessageReceived;
+            quickbloxClient.ChatXmppClient.ContactRemoved += ChatXmppClientOnOnContactRemoved;
             Dialogs = new ObservableCollection<DialogViewModel>();
         }
 

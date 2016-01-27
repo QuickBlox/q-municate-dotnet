@@ -87,7 +87,7 @@ namespace QMunicate.ViewModels
 
         public override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            QuickbloxClient.ChatXmppClient.OnContactsChanged += async (obj, args) => await Helpers.RunOnTheUiThread(ReloadLocalSearchResults);
+            QuickbloxClient.ChatXmppClient.ContactsChanged += async (obj, args) => await Helpers.RunOnTheUiThread(ReloadLocalSearchResults);
             await ReloadLocalSearchResults();
         }
 

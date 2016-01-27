@@ -94,7 +94,7 @@ namespace QMunicate.ViewModels
         {
             base.OnNavigatedFrom(e);
 
-            if (groupChatManager != null) groupChatManager.OnMessageReceived -= ChatManagerOnOnMessageReceived;
+            if (groupChatManager != null) groupChatManager.MessageReceived -= ChatManagerOnOnMessageReceived;
         }
 
         #endregion
@@ -131,7 +131,7 @@ namespace QMunicate.ViewModels
             await MessageCollectionViewModel.LoadMessages(dialogId);
 
             groupChatManager = QuickbloxClient.ChatXmppClient.GetGroupChatManager(dialog.XmppRoomJid, dialog.Id);
-            groupChatManager.OnMessageReceived += ChatManagerOnOnMessageReceived;
+            groupChatManager.MessageReceived += ChatManagerOnOnMessageReceived;
             groupChatManager.JoinGroup(currentUserId.ToString());
 
             IsLoading = false;
