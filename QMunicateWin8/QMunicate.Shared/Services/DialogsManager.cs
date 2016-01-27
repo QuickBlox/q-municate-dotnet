@@ -68,8 +68,9 @@ namespace QMunicate.Services
         {
             this.quickbloxClient = quickbloxClient;
             quickbloxClient.ChatXmppClient.MessageReceived += MessagesClientOnOnMessageReceived;
-            quickbloxClient.ChatXmppClient.SystemMessageReceived += MessagesClientOnOnSystemMessageReceived;
+            quickbloxClient.ChatXmppClient.SystemMessageReceived += ChatXmppClientOnOnSystemMessage;
             quickbloxClient.ChatXmppClient.ContactRemoved += ChatXmppClientOnOnContactRemoved;
+            quickbloxClient.ChatXmppClient.SystemMessageSent += ChatXmppClientOnOnSystemMessage;
             Dialogs = new ObservableCollection<DialogViewModel>();
         }
 
@@ -164,7 +165,7 @@ namespace QMunicate.Services
             });
         }
 
-        private async void MessagesClientOnOnSystemMessageReceived(object sender, SystemMessage message)
+        private async void ChatXmppClientOnOnSystemMessage(object sender, SystemMessage message)
         {
             await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
             {
