@@ -52,7 +52,10 @@ namespace QMunicate.Views
 
         private void MessagesListView_OnPointerEntered(object sender, PointerRoutedEventArgs e)
         {
-            LoseFocus(NewMessageTextBox);
+            if (NewMessageTextBox.IsEnabled)
+            {
+                LoseFocus(NewMessageTextBox);
+            }
         }
 
         private void LoseFocus(Control control)

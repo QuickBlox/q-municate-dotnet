@@ -49,7 +49,7 @@ namespace QMunicate.ViewModels
         public PrivateChatViewModel()
         {
             MessageCollectionViewModel = new MessageCollectionViewModel();
-            SendCommand = new RelayCommand(SendCommandExecute, () => !IsLoading && IsMessageSendingAllowed);
+            SendCommand = new RelayCommand(SendCommandExecute, () => !IsLoading);
             AcceptRequestCommand = new RelayCommand(AcceptRequestCommandExecute, () => !IsLoading);
             RejectRequestCommand = new RelayCommand(RejectCRequestCommandExecute, () => !IsLoading);
             ShowUserInfoCommand = new RelayCommand(ShowUserInfoCommandExecute, () => !IsLoading);
@@ -268,6 +268,9 @@ namespace QMunicate.ViewModels
                     var currentMessage = currentMessageGroup[j];
                     if (currentMessage.NotificationType == NotificationTypes.FriendsAccept)
                     {
+                        IsActiveContactRequest = false;
+                        IsRequestRejected = false;
+                        IsWaitingForContactResponse = false;
                         isChecked = true;
                         break;
                     }
@@ -298,7 +301,7 @@ namespace QMunicate.ViewModels
 
         private async void SendCommandExecute()
         {
-            if (string.IsNullOrWhiteSpace(NewMessageText)) return;
+            if (string.IsNullOrWhiteSpace(NewMessageText) || !IsMessageSendingAllowed) return;
 
             NotifyPausedTyping();
 

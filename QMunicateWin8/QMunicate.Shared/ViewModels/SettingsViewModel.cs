@@ -169,9 +169,8 @@ namespace QMunicate.ViewModels
             IsLoading = true;
             var messageService = ServiceLocator.Locator.Get<IMessageService>();
             DialogCommand logoutCommand = new DialogCommand("logout", new RelayCommand(SignOut));
-            DialogCommand cancelCommand = new DialogCommand("cancel", new RelayCommand(() => { }), false, true);
+            DialogCommand cancelCommand = new DialogCommand("cancel", new RelayCommand(() => { IsLoading = false; }), false, true);
             await messageService.ShowAsync("Logout", "Do you really want to logout?", new [] {logoutCommand, cancelCommand});
-            IsLoading = false;
         }
 
         private async void SignOut()
