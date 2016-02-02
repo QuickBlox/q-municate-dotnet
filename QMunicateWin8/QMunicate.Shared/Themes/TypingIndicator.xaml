@@ -8,7 +8,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:TypingIndicator">
-                    <StackPanel  Orientation="Horizontal" HorizontalAlignment="Left" Background="LightGray" x:Name="PointsStackPanel" Height="40" Visibility="Collapsed">
+                    <StackPanel  Orientation="Horizontal" HorizontalAlignment="Left" Background="LightGray" x:Name="PointsStackPanel" Height="20" Visibility="Collapsed">
                         <StackPanel.Resources>
                             <Storyboard Duration="0:0:2" x:Name="JumpAnimation">
                                 <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Point1Transform" Storyboard.TargetProperty="ScaleY">

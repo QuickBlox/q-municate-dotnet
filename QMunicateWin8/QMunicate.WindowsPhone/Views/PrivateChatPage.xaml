@@ -66,7 +66,7 @@
                 <behaviors:ListViewAutoscrollBehavior />
             </i:Interaction.Behaviors>
         </ListView>
-        <controls:TypingIndicator Grid.Row="3" IsUserTyping="{Binding IsOtherUserTyping}" Margin="{StaticResource DefaultMargin}" />
+        <controls:TypingIndicator Grid.Row="3" IsUserTyping="{Binding IsOtherUserTyping}" Height="20" Margin="12 5 12 5" />
         
         <Border Grid.Row="4" Height="1" Background="Gray"/>
         <Grid Grid.Row="5">
