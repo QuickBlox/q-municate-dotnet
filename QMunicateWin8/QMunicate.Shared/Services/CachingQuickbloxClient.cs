@@ -32,7 +32,7 @@ namespace QMunicate.Services
         public CachingQuickbloxClient(IQuickbloxClient quickbloxClient)
         {
             this.quickbloxClient = quickbloxClient;
-            quickbloxClient.ChatXmppClient.OnPresenceReceived += ChatXmppClientOnOnPresenceReceived;
+            quickbloxClient.ChatXmppClient.PresenceReceived += ChatXmppClientOnOnPresenceReceived;
         }
 
         #endregion
