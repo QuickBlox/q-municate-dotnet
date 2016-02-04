@@ -174,6 +174,7 @@ namespace QMunicate.ViewModels
                 }
 
                 await FixLocalResultsNames();
+                await SetPresences();
                 await LoadLocalResultsImages();
             }
             IsLoading = false;
@@ -211,6 +212,20 @@ namespace QMunicate.ViewModels
                 if (user != null && !string.IsNullOrEmpty(user.FullName))
                 {
                     userVm.FullName = user.FullName;
+                }
+            }
+        }
+
+        private async Task SetPresences()
+        {
+            var cachingQbClient = ServiceLocator.Locator.Get<ICachingQuickbloxClient>();
+            foreach (var localResult in LocalResults)
+            {
+                localResult.IsOnline = QuickbloxClient.ChatXmppClient.Presences.Any(p => p.UserId == localResult.UserId && (p.PresenceType == PresenceType.None));
+                var user = await cachingQbClient.GetUserById(localResult.UserId);
+                if (user?.LastRequestAt != null)
+                {
+                    localResult.LastActive = user.LastRequestAt.Value;
                 }
             }
         }

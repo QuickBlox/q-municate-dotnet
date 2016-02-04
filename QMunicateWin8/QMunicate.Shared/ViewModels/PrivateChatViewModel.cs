@@ -18,6 +18,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using QMunicate.Services;
 using Quickblox.Sdk.Modules.ChatXmppModule.Interfaces;
+using Quickblox.Sdk.Modules.ChatXmppModule.Models;
 
 namespace QMunicate.ViewModels
 {
@@ -31,6 +32,8 @@ namespace QMunicate.ViewModels
         private bool isActiveContactRequest;
         private bool isWaitingForContactResponse;
         private bool isRequestRejected;
+        private bool isOnline;
+        private DateTime lastActive;
         private DialogViewModel dialog;
         private int currentUserId;
         private IPrivateChatManager privateChatManager;
@@ -137,6 +140,18 @@ namespace QMunicate.ViewModels
 
         public RelayCommand ShowUserInfoCommand { get; private set; }
 
+        public bool IsOnline
+        {
+            get { return isOnline; }
+            set { Set(ref isOnline, value); }
+        }
+
+        public DateTime LastActive
+        {
+            get { return lastActive; }
+            set { Set(ref lastActive, value); }
+        }
+
         #endregion
 
         #region Navigation
@@ -185,6 +200,7 @@ namespace QMunicate.ViewModels
                 ChatImage = chatParameter.Dialog.Image;
 
                 int otherUserId = dialog.OccupantIds.FirstOrDefault(id => id != currentUserId);
+
                 await QmunicateLoggerHolder.Log(QmunicateLogLevel.Debug, string.Format("Initializing Chat page. CurrentUserId: {0}. OtherUserId: {1}.", currentUserId, otherUserId));
 
                 if (!string.IsNullOrEmpty(chatParameter.Dialog.Id))
@@ -197,7 +213,11 @@ namespace QMunicate.ViewModels
                     privateChatManager.OpponentStartedTyping += PrivateChatManagerOnOpponentStartedTyping;
                     privateChatManager.OpponentPausedTyping += PrivateChatManagerOpponentOpponentPausedTyping;
                 }
-                
+
+                IsOnline = QuickbloxClient.ChatXmppClient.Presences.Any(p => p.UserId == otherUserId && p.PresenceType == PresenceType.None);
+                var otherUser = await ServiceLocator.Locator.Get<ICachingQuickbloxClient>().GetUserById(otherUserId);
+                if (otherUser?.LastRequestAt != null)
+                    LastActive = otherUser.LastRequestAt.Value;
 
                 CheckIsMessageSendingAllowed();
             }
