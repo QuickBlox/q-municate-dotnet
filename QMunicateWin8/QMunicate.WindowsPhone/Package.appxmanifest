@@ -25,10 +25,20 @@
         <Extension Category="windows.protocol">
           <Protocol Name="fb605405446247805" />
         </Extension>
+        <Extension Category="windows.fileOpenPicker">
+          <FileOpenPicker>
+            <SupportedFileTypes>
+              <FileType>.jpg</FileType>
+              <FileType>.png</FileType>
+              <FileType>.jpeg</FileType>
+            </SupportedFileTypes>
+          </FileOpenPicker>
+        </Extension>
       </Extensions>
     </Application>
   </Applications>
   <Capabilities>
     <Capability Name="internetClientServer" />
+    <Capability Name="picturesLibrary" />
   </Capabilities>
 </Package>
