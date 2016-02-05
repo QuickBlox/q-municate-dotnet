@@ -93,6 +93,9 @@
     <Compile Include="Behaviors\ListViewIncrementalLoadingBehavior.cs" />
     <Compile Include="Behaviors\ListViewAutoscrollBehavior.cs" />
     <Compile Include="Behaviors\StatusBarBehavior.cs" />
+    <Compile Include="Views\ImagePreviewPage.xaml.cs">
+      <DependentUpon>ImagePreviewPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PrivateChatPage.xaml.cs">
       <DependentUpon>PrivateChatPage.xaml</DependentUpon>
     </Compile>
@@ -150,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\app_logo.png" />
+    <Content Include="Assets\attach_ic.png" />
     <Content Include="Assets\Logo.scale-240.png" />
     <Content Include="Assets\send_ic.png" />
     <Content Include="Assets\SmallLogo.scale-240.png" />
@@ -164,6 +168,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\ImagePreviewPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PrivateChatPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

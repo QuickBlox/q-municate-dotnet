@@ -7,19 +7,26 @@ using QMunicate.ViewModels.PartialViewModels;
 using Quickblox.Sdk;
 using Quickblox.Sdk.GeneralDataModel.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
+using Windows.Storage;
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using QMunicate.Services;
 using Quickblox.Sdk.Modules.ChatXmppModule.Interfaces;
+using Quickblox.Sdk.Modules.ChatXmppModule.Models;
+using Quickblox.Sdk.Modules.ContentModule;
 
 namespace QMunicate.ViewModels
 {
-    public class GroupChatViewModel : ViewModel
+    public class GroupChatViewModel : ViewModel, IFileOpenPickerContinuable
     {
         #region Fields
 
@@ -39,7 +46,9 @@ namespace QMunicate.ViewModels
         {
             MessageCollectionViewModel = new MessageCollectionViewModel();
             SendCommand = new RelayCommand(SendCommandExecute, () => !IsLoading);
+            SendAttachmentCommand = new RelayCommand(SendAttachmentCommandExecute, () => !IsLoading);
             ShowGroupInfoCommand = new RelayCommand(ShowGroupInfoCommandExecute, () => !IsLoading);
+            ShowImageCommand = new RelayCommand<ImageSource>(ShowImageCommandExecute, img => !IsLoading);
         }
 
         #endregion
@@ -74,7 +83,11 @@ namespace QMunicate.ViewModels
 
         public RelayCommand SendCommand { get; private set; }
 
+        public RelayCommand SendAttachmentCommand { get; }
+
         public RelayCommand ShowGroupInfoCommand { get; private set; }
+
+        public RelayCommand<ImageSource> ShowImageCommand { get; }
 
         #endregion
 
@@ -104,7 +117,35 @@ namespace QMunicate.ViewModels
         protected override void OnIsLoadingChanged()
         {
             SendCommand.RaiseCanExecuteChanged();
+            SendAttachmentCommand.RaiseCanExecuteChanged();
             ShowGroupInfoCommand.RaiseCanExecuteChanged();
+        }
+
+        #endregion
+
+        #region IFileOpenPickerContinuable Members
+
+        public async void ContinueFileOpenPicker(IReadOnlyList<StorageFile> files)
+        {
+            if (files == null || !files.Any()) return;
+            IsLoading = true;
+            using (var stream = (FileRandomAccessStream)await files[0].OpenAsync(FileAccessMode.Read))
+            {
+                var newImageBytes = new byte[stream.Size];
+                using (var dataReader = new DataReader(stream))
+                {
+                    await dataReader.LoadAsync((uint)stream.Size);
+                    dataReader.ReadBytes(newImageBytes);
+                }
+
+                var contentHelper = new ContentClientHelper(QuickbloxClient);
+                var blobUploadInfo = await contentHelper.UploadImage(newImageBytes, false);
+                if (blobUploadInfo != null)
+                {
+                    SendAttachment(blobUploadInfo);
+                }
+            }
+            IsLoading = false;
         }
 
         #endregion
@@ -191,6 +232,35 @@ namespace QMunicate.ViewModels
         private void ShowGroupInfoCommandExecute()
         {
             NavigationService.Navigate(ViewLocator.GroupInfo, dialog.Id);
+        }
+
+        private void SendAttachmentCommandExecute()
+        {
+            FileOpenPicker picker = new FileOpenPicker();
+            picker.FileTypeFilter.Add(".jpg");
+            picker.FileTypeFilter.Add(".png");
+#if WINDOWS_PHONE_APP
+            picker.PickSingleFileAndContinue();
+#endif
+        }
+
+        private void SendAttachment(BlobUploadInfo blobUploadInfo)
+        {
+            if (string.IsNullOrEmpty(blobUploadInfo.UId))
+                return;
+
+            var attachment = new AttachmentTag
+            {
+                Id = blobUploadInfo.UId,
+                Type = "image"
+            };
+
+            groupChatManager.SendAttachemnt(attachment);
+        }
+
+        private void ShowImageCommandExecute(ImageSource image)
+        {
+            NavigationService.Navigate(ViewLocator.ImagePreview, image);
         }
 
         #endregion

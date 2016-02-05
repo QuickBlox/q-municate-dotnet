@@ -23,7 +23,9 @@
         <selectors:MessageTemplateSelector x:Key="MessageTemplateSelector"
                                        NotificationMessageTemplate="{StaticResource NotificationMessageTemplate}"
                                        IncomingMessageTemplate="{StaticResource IncomingMessageTemlate}"
-                                       OutgoingMessageTemplate="{StaticResource OutgoingMessageTemplate}"/>
+                                       OutgoingMessageTemplate="{StaticResource OutgoingMessageTemplate}"
+                                       IncomingImageTemlate="{StaticResource IncomingImageTemlate}"
+                                       OutgoingImageTemplate="{StaticResource OutgoingImageTemplate}"/>
         
         <CollectionViewSource x:Key="groupedMessagesSource" Source="{Binding DataContext.MessageCollectionViewModel.Messages, ElementName=Page}" IsSourceGrouped="True" />
     </Page.Resources>
@@ -86,13 +88,23 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="NewMessageTextBox" Text="{Binding NewMessageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     KeyDown="TextBox_OnKeyDown" Height="120" TextWrapping="Wrap" PlaceholderText="Message" 
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBox x:Name="NewMessageTextBox" Grid.RowSpan="2" Text="{Binding NewMessageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     KeyDown="TextBox_OnKeyDown" Height="120" TextWrapping="Wrap" PlaceholderText="Message" IsReadOnly="{Binding IsLoading}"
                      Background="White" BorderBrush="White" Margin="{StaticResource DefaultMargin}" IsEnabled="{Binding IsMessageSendingAllowed}"/>
-            <Button x:Name="SendButton" Grid.Column="1" VerticalAlignment="Top"
+            <Button  Grid.Column="1" Grid.Row="0" VerticalAlignment="Top" IsTabStop="False"
                     Command="{Binding SendCommand}" BorderThickness="0"  Style="{StaticResource ContentButtonStyle}">
                 <Button.Content>
                     <Image Source="../Assets/send_ic.png" Width="50" Height="50"/>
+                </Button.Content>
+            </Button>
+            <Button  Grid.Column="1" Grid.Row="1" VerticalAlignment="Top" IsTabStop="False"
+                    Command="{Binding SendAttachmentCommand}"  BorderThickness="0"  Style="{StaticResource ContentButtonStyle}">
+                <Button.Content>
+                    <Image Source="../Assets/attach_ic.png" Width="50" Height="50"/>
                 </Button.Content>
             </Button>
         </Grid>

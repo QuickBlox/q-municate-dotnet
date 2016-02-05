@@ -16,6 +16,10 @@ namespace QMunicate.Selectors
 
         public DataTemplate IncomingMessageTemplate { get; set; }
 
+        public DataTemplate IncomingImageTemlate { get; set; }
+
+        public DataTemplate OutgoingImageTemplate { get; set; }
+
         /// <summary>
         /// When overridden in a derived class, returns a DataTemplate based on custom logic.
         /// </summary>
@@ -28,6 +32,11 @@ namespace QMunicate.Selectors
             if (message != null)
             {
                 if (message.NotificationType != 0) return NotificationMessageTemplate;
+
+                if (message.AttachedImage != null)
+                {
+                    return message.MessageType == MessageType.Incoming ? IncomingImageTemlate : OutgoingImageTemplate;
+                }
 
                 return message.MessageType == MessageType.Incoming ? IncomingMessageTemplate : OutgoingMessageTemplate;
             }

@@ -8,21 +8,27 @@ using QMunicate.ViewModels.PartialViewModels;
 using Quickblox.Sdk;
 using Quickblox.Sdk.GeneralDataModel.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
+using Windows.Storage;
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using QMunicate.Services;
 using Quickblox.Sdk.Modules.ChatXmppModule.Interfaces;
 using Quickblox.Sdk.Modules.ChatXmppModule.Models;
+using Quickblox.Sdk.Modules.ContentModule;
 
 namespace QMunicate.ViewModels
 {
-    public class PrivateChatViewModel : ViewModel
+    public class PrivateChatViewModel : ViewModel, IFileOpenPickerContinuable
     {
         #region Fields
 
@@ -53,9 +59,11 @@ namespace QMunicate.ViewModels
         {
             MessageCollectionViewModel = new MessageCollectionViewModel();
             SendCommand = new RelayCommand(SendCommandExecute, () => !IsLoading);
+            SendAttachmentCommand = new RelayCommand(SendAttachmentCommandExecute, () => !IsLoading);
             AcceptRequestCommand = new RelayCommand(AcceptRequestCommandExecute, () => !IsLoading);
             RejectRequestCommand = new RelayCommand(RejectCRequestCommandExecute, () => !IsLoading);
             ShowUserInfoCommand = new RelayCommand(ShowUserInfoCommandExecute, () => !IsLoading);
+            ShowImageCommand = new RelayCommand<ImageSource>(ShowImageCommandExecute, img => !IsLoading);
             typingIndicatorTimer.Interval = typingIndicatorTimeout;
             typingIndicatorTimer.Tick += (sender, o) => IsOtherUserTyping = false;
             pausedTypingTimer.Interval = pausedTypingTimeout;
@@ -96,7 +104,7 @@ namespace QMunicate.ViewModels
             set
             {
                 Set(ref isActiveContactRequest, value);
-                RaisePropertyChanged(()=> IsMessageSendingAllowed);
+                NotifyCanExecuteChanged();
             }
         }
 
@@ -106,7 +114,7 @@ namespace QMunicate.ViewModels
             set
             {
                 Set(ref isWaitingForContactResponse, value);
-                RaisePropertyChanged(() => IsMessageSendingAllowed);
+                NotifyCanExecuteChanged();
                 
             }
         }
@@ -117,7 +125,7 @@ namespace QMunicate.ViewModels
             set
             {
                 Set(ref isRequestRejected, value);
-                RaisePropertyChanged(() => IsMessageSendingAllowed);                
+                NotifyCanExecuteChanged();
             }
         }
 
@@ -132,13 +140,17 @@ namespace QMunicate.ViewModels
             set { Set(ref isOtherUserTyping, value); }
         }
 
-        public RelayCommand SendCommand { get; private set; }
+        public RelayCommand SendCommand { get;  }
 
-        public RelayCommand AcceptRequestCommand { get; private set; }
+        public RelayCommand SendAttachmentCommand { get; }
 
-        public RelayCommand RejectRequestCommand { get; private set; }
+        public RelayCommand AcceptRequestCommand { get;  }
 
-        public RelayCommand ShowUserInfoCommand { get; private set; }
+        public RelayCommand RejectRequestCommand { get;  }
+
+        public RelayCommand ShowUserInfoCommand { get;  }
+
+        public RelayCommand<ImageSource> ShowImageCommand { get; }
 
         public bool IsOnline
         {
@@ -177,10 +189,35 @@ namespace QMunicate.ViewModels
 
         protected override void OnIsLoadingChanged()
         {
-            SendCommand.RaiseCanExecuteChanged();
-            AcceptRequestCommand.RaiseCanExecuteChanged();
-            RejectRequestCommand.RaiseCanExecuteChanged();
-            ShowUserInfoCommand.RaiseCanExecuteChanged();
+            NotifyCanExecuteChanged();
+        }
+
+        #endregion
+
+        #region IFileOpenPickerContinuable Members
+
+        public async void ContinueFileOpenPicker(IReadOnlyList<StorageFile> files)
+        {
+            if (files == null || !files.Any()) return;
+            IsLoading = true;
+            using (var stream = (FileRandomAccessStream) await files[0].OpenAsync(FileAccessMode.Read))
+            {
+                var newImageBytes = new byte[stream.Size];
+                using (var dataReader = new DataReader(stream))
+                {
+                    await dataReader.LoadAsync((uint)stream.Size);
+                    dataReader.ReadBytes(newImageBytes);
+                }
+
+                var contentHelper = new ContentClientHelper(QuickbloxClient);
+                var blobUploadInfo = await contentHelper.UploadImage(newImageBytes, false);
+                if (blobUploadInfo != null)
+                {
+                    var imageUrl = contentHelper.GenerateImageUrl(blobUploadInfo.UId, blobUploadInfo.IsPublic);
+                    await SendAttachment(blobUploadInfo, imageUrl);
+                }
+            }
+            IsLoading = false;
         }
 
         #endregion
@@ -213,7 +250,7 @@ namespace QMunicate.ViewModels
                     privateChatManager.OpponentStartedTyping += PrivateChatManagerOnOpponentStartedTyping;
                     privateChatManager.OpponentPausedTyping += PrivateChatManagerOpponentOpponentPausedTyping;
                 }
-
+                
                 IsOnline = QuickbloxClient.ChatXmppClient.Presences.Any(p => p.UserId == otherUserId && p.PresenceType == PresenceType.None);
                 var otherUser = await ServiceLocator.Locator.Get<ICachingQuickbloxClient>().GetUserById(otherUserId);
                 if (otherUser?.LastRequestAt != null)
@@ -348,6 +385,41 @@ namespace QMunicate.ViewModels
             NewMessageText = "";
         }
 
+        private async void SendAttachmentCommandExecute()
+        {
+            FileOpenPicker picker = new FileOpenPicker();
+            picker.FileTypeFilter.Add(".jpg");
+            picker.FileTypeFilter.Add(".png");
+#if WINDOWS_PHONE_APP
+            picker.PickSingleFileAndContinue();
+#endif
+        }
+
+        private async Task SendAttachment(BlobUploadInfo blobUploadInfo, string imageUrl)
+        {
+            if (string.IsNullOrEmpty(blobUploadInfo.UId))
+                return;
+
+            var attachment = new AttachmentTag
+            {
+                Id = blobUploadInfo.UId,
+                Type = "image"
+            };
+
+            privateChatManager.SendAttachemnt(attachment);
+
+            var messageViewModel = new MessageViewModel()
+            {
+                AttachedImage = new BitmapImage(new Uri(imageUrl)),
+                MessageType = MessageType.Outgoing,
+                DateTime = DateTime.Now
+            };
+
+            await MessageCollectionViewModel.AddNewMessage(messageViewModel);
+            var dialogsManager = ServiceLocator.Locator.Get<IDialogsManager>();
+            await dialogsManager.UpdateDialogLastMessage(dialog.Id, NewMessageText, DateTime.Now);
+        }
+
         private async void AcceptRequestCommandExecute()
         {
             if (privateChatManager == null) return;
@@ -388,6 +460,11 @@ namespace QMunicate.ViewModels
             NavigationService.Navigate(ViewLocator.UserInfo, dialog == null ? null : dialog.Id);
         }
 
+        private void ShowImageCommandExecute(ImageSource image)
+        {
+            NavigationService.Navigate(ViewLocator.ImagePreview, image);
+        }
+
         private async void ChatManagerOnOnMessageReceived(object sender, Message message)
         {
             await MessageCollectionViewModel.AddNewMessage(message);
@@ -396,6 +473,16 @@ namespace QMunicate.ViewModels
             {
                 CheckIsMessageSendingAllowed();
             });
+        }
+
+        private void NotifyCanExecuteChanged()
+        {
+            SendCommand.RaiseCanExecuteChanged();
+            SendAttachmentCommand.RaiseCanExecuteChanged();
+            AcceptRequestCommand.RaiseCanExecuteChanged();
+            RejectRequestCommand.RaiseCanExecuteChanged();
+            ShowUserInfoCommand.RaiseCanExecuteChanged();
+            ShowImageCommand.RaiseCanExecuteChanged();
         }
 
         #endregion

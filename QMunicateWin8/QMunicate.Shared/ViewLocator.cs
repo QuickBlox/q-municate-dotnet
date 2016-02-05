@@ -22,5 +22,7 @@ namespace QMunicate
         public const string SettingsEdit = "SettingsEdit";
         public const string UserInfo = "UserInfo";
         public const string First = "First";
+        public const string ImagePreview = "ImagePreview";
+
     }
 }
