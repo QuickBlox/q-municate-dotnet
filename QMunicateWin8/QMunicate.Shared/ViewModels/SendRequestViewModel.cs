@@ -119,7 +119,7 @@ namespace QMunicate.ViewModels
             if (createDialogResponse.StatusCode != HttpStatusCode.Created) return false;
 
             var privateChatManager = QuickbloxClient.ChatXmppClient.GetPrivateChatManager(otherUserId, createDialogResponse.Result.Id);
-            privateChatManager.AddToFriends(UserName);
+            privateChatManager.AddToFriends(true, UserName);
 
             var dialogsManager = ServiceLocator.Locator.Get<IDialogsManager>();
             await dialogsManager.ReloadDialogs();

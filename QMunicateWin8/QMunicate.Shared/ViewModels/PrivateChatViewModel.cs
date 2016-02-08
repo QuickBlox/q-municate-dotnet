@@ -424,7 +424,7 @@ namespace QMunicate.ViewModels
         {
             if (privateChatManager == null) return;
             IsLoading = true;
-            bool accepted = privateChatManager.AcceptFriend();
+            bool accepted = privateChatManager.AcceptFriend(true);
 
             if (accepted)
             {
@@ -442,7 +442,7 @@ namespace QMunicate.ViewModels
             if (privateChatManager == null) return;
 
             IsLoading = true;
-            bool rejected = privateChatManager.RejectFriend();
+            bool rejected = privateChatManager.RejectFriend(true);
 
             if (rejected)
             {
