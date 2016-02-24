@@ -19,6 +19,8 @@
     <Page.Resources>
         <converters:IntToVisibilityConverter x:Key="IntToVisibilityConverter"/>
         <converters:IntToVisibilityConverter Invert="True" x:Key="InverseIntToVisibilityConverter"/>
+        <converters:HandyDateConverter x:Key="HandyDateConverter" />
+
 
         <Style x:Key="CheckBoxStyle1" TargetType="CheckBox">
             <Setter Property="Background" Value="{ThemeResource CheckBoxBackgroundThemeBrush}"/>
@@ -129,8 +131,17 @@
             <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" Style="{StaticResource CheckBoxStyle1}" BorderBrush="Gray" IsEnabled="{Binding DataContext.IsLoading, ElementName=Page, Converter={StaticResource BooleanToNegationConverter}}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="{Binding Item.Image, TargetNullValue=../Assets/AvatarPlaceholder.png}" Width="55" Height="55" Margin="12 0 12 0"/>
-                    <controls:SelectionsTextBlock Text="{Binding Item.FullName}" SelectionText="{Binding Text, ElementName=SearchTextBox}" SelectionColor="DodgerBlue"
-                                              FontSize="{StaticResource NormalFontSize}" VerticalAlignment="Center"/>
+                    
+                    <StackPanel VerticalAlignment="Center">
+                        <controls:SelectionsTextBlock Text="{Binding Item.FullName}" SelectionText="{Binding Text, ElementName=SearchTextBox}" SelectionColor="DodgerBlue"
+                                              FontSize="{StaticResource NormalFontSize}"/>
+                        <TextBlock Text="online" Foreground="Gray" FontSize="{StaticResource SmallFontSize}" Visibility="{Binding Item.IsOnline, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        <StackPanel Orientation="Horizontal" Visibility="{Binding Item.IsOnline, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                            <TextBlock Text="last seen" Foreground="Gray" FontSize="{StaticResource SmallFontSize}" Margin="0 0 5 0" />
+                            <TextBlock Text="{Binding Item.LastActive, Converter={StaticResource HandyDateConverter}}" Foreground="Gray" FontSize="{StaticResource SmallFontSize}"/>
+                        </StackPanel>
+                    </StackPanel>
+
                 </StackPanel>
             </CheckBox>
         </DataTemplate>

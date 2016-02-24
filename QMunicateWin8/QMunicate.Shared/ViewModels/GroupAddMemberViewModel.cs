@@ -220,7 +220,21 @@ namespace QMunicate.ViewModels
                 }
             }
 
+            await SetPresences();
+        }
 
+        private async Task SetPresences()
+        {
+            var cachingQbClient = ServiceLocator.Locator.Get<ICachingQuickbloxClient>();
+            foreach (var userToAdd in UsersToAdd)
+            {
+                userToAdd.Item.IsOnline = QuickbloxClient.ChatXmppClient.Presences.Any(p => p.UserId == userToAdd.Item.UserId && (p.PresenceType == PresenceType.None || p.PresenceType == PresenceType.Subscribed));
+                var user = await cachingQbClient.GetUserById(userToAdd.Item.UserId);
+                if (user?.LastRequestAt != null)
+                {
+                    userToAdd.Item.LastActive = user.LastRequestAt.Value;
+                }
+            }
         }
 
         private async void CreateGroupCommandExecute()
