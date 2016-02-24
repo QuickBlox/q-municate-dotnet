@@ -118,7 +118,7 @@ namespace QMunicate.ViewModels
             var cachingQbClient = ServiceLocator.Locator.Get<ICachingQuickbloxClient>();
             foreach (var localResult in Contacts)
             {
-                localResult.IsOnline = QuickbloxClient.ChatXmppClient.Presences.Any(p => p.UserId == localResult.UserId && (p.PresenceType == PresenceType.None));
+                localResult.IsOnline = QuickbloxClient.ChatXmppClient.Presences.Any(p => p.UserId == localResult.UserId && (p.PresenceType == PresenceType.None || p.PresenceType == PresenceType.Subscribed));
                 var user = await cachingQbClient.GetUserById(localResult.UserId);
                 if (user?.LastRequestAt != null)
                 {

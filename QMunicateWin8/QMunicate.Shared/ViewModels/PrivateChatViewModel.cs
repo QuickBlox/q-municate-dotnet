@@ -251,7 +251,7 @@ namespace QMunicate.ViewModels
                     privateChatManager.OpponentPausedTyping += PrivateChatManagerOpponentOpponentPausedTyping;
                 }
                 
-                IsOnline = QuickbloxClient.ChatXmppClient.Presences.Any(p => p.UserId == otherUserId && p.PresenceType == PresenceType.None);
+                IsOnline = QuickbloxClient.ChatXmppClient.Presences.Any(p => p.UserId == otherUserId && (p.PresenceType == PresenceType.None || p.PresenceType == PresenceType.Subscribed));
                 var otherUser = await ServiceLocator.Locator.Get<ICachingQuickbloxClient>().GetUserById(otherUserId);
                 if (otherUser?.LastRequestAt != null)
                     LastActive = otherUser.LastRequestAt.Value;

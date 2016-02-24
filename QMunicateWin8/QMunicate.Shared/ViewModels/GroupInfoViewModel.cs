@@ -109,7 +109,7 @@ namespace QMunicate.ViewModels
 
             foreach (var userViewModel in Participants)
             {
-                userViewModel.IsOnline = QuickbloxClient.ChatXmppClient.Presences.Any(p => p.UserId == userViewModel.UserId && (p.PresenceType == PresenceType.None));
+                userViewModel.IsOnline = QuickbloxClient.ChatXmppClient.Presences.Any(p => p.UserId == userViewModel.UserId && (p.PresenceType == PresenceType.None || p.PresenceType == PresenceType.Subscribed));
                 var user = await cachingQbClient.GetUserById(userViewModel.UserId);
                 if (user?.LastRequestAt != null)
                 {
