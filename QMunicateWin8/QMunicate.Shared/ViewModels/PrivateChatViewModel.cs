@@ -105,6 +105,7 @@ namespace QMunicate.ViewModels
             {
                 Set(ref isActiveContactRequest, value);
                 NotifyCanExecuteChanged();
+                RaisePropertyChanged(() => IsMessageSendingAllowed);
             }
         }
 
@@ -115,7 +116,7 @@ namespace QMunicate.ViewModels
             {
                 Set(ref isWaitingForContactResponse, value);
                 NotifyCanExecuteChanged();
-                
+                RaisePropertyChanged(() => IsMessageSendingAllowed);
             }
         }
 
@@ -126,6 +127,7 @@ namespace QMunicate.ViewModels
             {
                 Set(ref isRequestRejected, value);
                 NotifyCanExecuteChanged();
+                RaisePropertyChanged(() => IsMessageSendingAllowed);
             }
         }
 
