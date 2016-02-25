@@ -389,6 +389,8 @@ namespace QMunicate.ViewModels
 
         private async void SendAttachmentCommandExecute()
         {
+            if (!IsMessageSendingAllowed) return;
+
             FileOpenPicker picker = new FileOpenPicker();
             picker.FileTypeFilter.Add(".jpg");
             picker.FileTypeFilter.Add(".png");
