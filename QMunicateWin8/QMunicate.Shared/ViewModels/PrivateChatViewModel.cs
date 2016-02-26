@@ -421,7 +421,7 @@ namespace QMunicate.ViewModels
 
             await MessageCollectionViewModel.AddNewMessage(messageViewModel);
             var dialogsManager = ServiceLocator.Locator.Get<IDialogsManager>();
-            await dialogsManager.UpdateDialogLastMessage(dialog.Id, NewMessageText, DateTime.Now);
+            await dialogsManager.UpdateDialogLastMessage(dialog.Id, "Attachment", DateTime.Now);
         }
 
         private async void AcceptRequestCommandExecute()
