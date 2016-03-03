@@ -13,8 +13,8 @@ namespace QMunicate.Controls
     {
         #region Fields
 
-        private const string TextBlockName = "TextBlock";
-        private TextBlock textBlock;
+        private const string TextStackPanelName = "TextStackPanel";
+        private StackPanel textStackPanel;
 
         #endregion
 
@@ -64,7 +64,7 @@ namespace QMunicate.Controls
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            textBlock = (TextBlock)GetTemplateChild(TextBlockName);
+            textStackPanel = (StackPanel)GetTemplateChild(TextStackPanelName);
             FormatSelection(this);
         }
 
@@ -81,39 +81,34 @@ namespace QMunicate.Controls
 
         private static void FormatSelection(SelectionsTextBlock thisControl, bool ignoreCase = true)
         {
-            if (thisControl.textBlock == null) return;
+            if (thisControl.textStackPanel == null) return;
 
-            thisControl.textBlock.Inlines.Clear();
+            thisControl.textStackPanel.Children.Clear();
 
             int selectionIndex = thisControl.Text.IndexOf(thisControl.SelectionText, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal);
 
             if (string.IsNullOrWhiteSpace(thisControl.Text) || string.IsNullOrWhiteSpace(thisControl.SelectionText) ||
                 selectionIndex == -1)
             {
-                thisControl.textBlock.Inlines.Add(new Run() { Text = thisControl.Text });
+                thisControl.textStackPanel.Children.Add(new TextBlock() { Text = thisControl.Text });
                 return;
             }
 
             if (selectionIndex != 0)
             {
                 var beforePart = thisControl.Text.Substring(0, selectionIndex);
-                var beforeblock = new Run {Text = beforePart};
-                thisControl.textBlock.Inlines.Add(beforeblock);
+                thisControl.textStackPanel.Children.Add(new TextBlock() { Text = beforePart });
+
             }
 
             var selectedPart = thisControl.Text.Substring(selectionIndex, thisControl.SelectionText.Length);
-            var selectionBlock = new Run
-            {
-                Text = selectedPart,
-                Foreground = new SolidColorBrush(thisControl.SelectionColor)
-            };
-            thisControl.textBlock.Inlines.Add(selectionBlock);
+            thisControl.textStackPanel.Children.Add(new TextBlock() { Text = selectedPart, Foreground = new SolidColorBrush(thisControl.SelectionColor) });
 
             if (selectionIndex + thisControl.SelectionText.Length < thisControl.Text.Length)
             {
                 var afterPart = thisControl.Text.Substring(selectionIndex + thisControl.SelectionText.Length);
-                var afterBlock = new Run {Text = afterPart};
-                thisControl.textBlock.Inlines.Add(afterBlock);
+                thisControl.textStackPanel.Children.Add(new TextBlock() { Text = afterPart });
+
             }
         }
 

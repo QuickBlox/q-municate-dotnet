@@ -7,9 +7,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:SelectionsTextBlock">
-                    <Grid Background="Transparent">
-                       <TextBlock x:Name="TextBlock" Text="{TemplateBinding Text}"/>
-                    </Grid>
+                    <StackPanel Orientation="Horizontal" x:Name="TextStackPanel"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
