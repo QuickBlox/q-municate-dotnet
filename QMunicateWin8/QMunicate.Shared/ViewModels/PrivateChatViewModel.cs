@@ -42,6 +42,7 @@ namespace QMunicate.ViewModels
         private DateTime lastActive;
         private DialogViewModel dialog;
         private int currentUserId;
+        private int otherUserId;
         private IPrivateChatManager privateChatManager;
         private bool isMeTyping;
         private bool isOtherUserTyping;
@@ -238,7 +239,7 @@ namespace QMunicate.ViewModels
                 ChatName = chatParameter.Dialog.Name;
                 ChatImage = chatParameter.Dialog.Image;
 
-                int otherUserId = dialog.OccupantIds.FirstOrDefault(id => id != currentUserId);
+                otherUserId = dialog.OccupantIds.FirstOrDefault(id => id != currentUserId);
 
                 await QmunicateLoggerHolder.Log(QmunicateLogLevel.Debug, string.Format("Initializing Chat page. CurrentUserId: {0}. OtherUserId: {1}.", currentUserId, otherUserId));
 
@@ -253,6 +254,7 @@ namespace QMunicate.ViewModels
                     privateChatManager.OpponentPausedTyping += PrivateChatManagerOpponentOpponentPausedTyping;
                 }
                 
+                QuickbloxClient.ChatXmppClient.PresenceReceived += ChatXmppClientOnPresenceReceived;
                 IsOnline = QuickbloxClient.ChatXmppClient.Presences.Any(p => p.UserId == otherUserId && (p.PresenceType == PresenceType.None || p.PresenceType == PresenceType.Subscribed));
                 var otherUser = await ServiceLocator.Locator.Get<ICachingQuickbloxClient>().GetUserById(otherUserId);
                 if (otherUser?.LastRequestAt != null)
@@ -262,6 +264,23 @@ namespace QMunicate.ViewModels
             }
 
             IsLoading = false;
+        }
+
+        private async void ChatXmppClientOnPresenceReceived(object sender, Presence presence)
+        {
+            if (presence.UserId == otherUserId)
+            {
+                await Helpers.RunOnTheUiThread(() =>
+                {
+                    if (presence.PresenceType == PresenceType.None || presence.PresenceType == PresenceType.Subscribed)
+                        IsOnline = true;
+
+                    if (presence.PresenceType == PresenceType.Unavailable || presence.PresenceType == PresenceType.Unsubscribed)
+                        IsOnline = false;
+                });
+
+
+            }
         }
 
         #region IsTyping functionality
