@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.Networking.PushNotifications;
 using Windows.Security.Credentials;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media;
@@ -148,6 +149,9 @@ namespace QMunicate.ViewModels
             if (newValue)
             {
                 SettingsManager.Instance.WriteToSettings(SettingsKeys.UserDisabledPush, false);
+
+                var pushChannel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
+                await pushNotificationsManager.UpdatePushTokenIfNeeded(pushChannel);
 
                 bool isEnabled = await pushNotificationsManager.CreateSubscriptionIfNeeded();
                 if (!isEnabled)
