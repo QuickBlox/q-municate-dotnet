@@ -20,7 +20,7 @@
                                        NotificationMessageTemplate="{StaticResource NotificationMessageTemplate}"
                                        IncomingMessageTemplate="{StaticResource IncomingGroupMessageTemlate}"
                                        OutgoingMessageTemplate="{StaticResource OutgoingMessageTemplate}"
-                                       IncomingImageTemlate="{StaticResource IncomingImageTemlate}"
+                                       IncomingImageTemlate="{StaticResource IncomingGroupImageTemlate}"
                                        OutgoingImageTemplate="{StaticResource OutgoingImageTemplate}"/>
         
         <CollectionViewSource x:Key="groupedMessagesSource" Source="{Binding DataContext.MessageCollectionViewModel.Messages, ElementName=Page}" IsSourceGrouped="True" />
