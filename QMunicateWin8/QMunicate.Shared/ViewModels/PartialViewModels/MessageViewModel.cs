@@ -21,6 +21,7 @@ namespace QMunicate.ViewModels.PartialViewModels
         public NotificationTypes NotificationType { get; set; }
         public int SenderId { get; set; }
         public string SenderName { get; set; }
+        public ImageSource SenderImage { get; set; }
         public ImageSource AttachedImage { get; set; }
     }
 }

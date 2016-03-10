@@ -16,7 +16,9 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Media.Imaging;
+using Newtonsoft.Json;
 using Quickblox.Sdk.Modules.ContentModule;
+using Quickblox.Sdk.Modules.UsersModule.Models;
 
 namespace QMunicate.ViewModels.PartialViewModels
 {
@@ -276,7 +278,13 @@ namespace QMunicate.ViewModels.PartialViewModels
 
             var cachingQbClient = ServiceLocator.Locator.Get<ICachingQuickbloxClient>();
             var senderUser = await cachingQbClient.GetUserById(message.SenderId);
-            if (senderUser != null) messageViewModel.SenderName = senderUser.FullName;
+            if (senderUser != null)
+            {
+                messageViewModel.SenderName = senderUser.FullName;
+
+                var customData = JsonConvert.DeserializeObject<CustomData>(senderUser.CustomData);
+                messageViewModel.SenderImage = await ServiceLocator.Locator.Get<IImageService>().GetPublicImage(customData?.AvatarUrl);
+            }
 
             bool isImageAttached = message.Attachments != null && message.Attachments.Any() && !string.IsNullOrEmpty(message.Attachments[0].Id);
 
