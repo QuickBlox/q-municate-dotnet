@@ -37,7 +37,7 @@
     </interactivity:Interaction.Behaviors>
 
     <Page.BottomAppBar>
-        <CommandBar Background="{StaticResource AppBarBrush}">
+        <CommandBar Background="{StaticResource AppBarBrush}" Foreground="White">
             <AppBarButton Label="Done" Command="{Binding SignUpCommand}">
                 <AppBarButton.Icon>
                     <SymbolIcon Symbol="Accept" Foreground="White"/>

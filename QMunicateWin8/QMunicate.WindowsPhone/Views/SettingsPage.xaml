@@ -37,7 +37,7 @@
     </Grid>
 
     <Page.BottomAppBar>
-        <CommandBar Background="{StaticResource AppBarBrush}">
+        <CommandBar Background="{StaticResource AppBarBrush}" Foreground="White">
             <AppBarButton Label="edit" Command="{Binding EditCommand}">
                 <AppBarButton.Icon>
                     <SymbolIcon Symbol="Edit" Foreground="White"/>

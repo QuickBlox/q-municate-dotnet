@@ -38,7 +38,7 @@
         <behaviors:StatusBarBehavior IsLoading="{Binding IsLoading}"/>
     </interactivity:Interaction.Behaviors>
     <Page.BottomAppBar>
-        <CommandBar Background="{StaticResource AppBarBrush}">
+        <CommandBar Background="{StaticResource AppBarBrush}" Foreground="White">
             <AppBarButton Label="save" Command="{Binding SaveCommand}">
                 <AppBarButton.Icon>
                     <SymbolIcon Symbol="Accept" Foreground="White"/>

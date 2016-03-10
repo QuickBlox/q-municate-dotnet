@@ -51,7 +51,7 @@
         <behaviors:StatusBarBehavior IsLoading="{Binding IsLoading}"/>
     </interactivity:Interaction.Behaviors>
     <Page.BottomAppBar>
-        <CommandBar Background="{StaticResource AppBarBrush}">
+        <CommandBar Background="{StaticResource AppBarBrush}" Foreground="White">
             <AppBarButton Label="add" Command="{Binding AddMembersCommand}">
                 <AppBarButton.Icon>
                     <SymbolIcon Symbol="Add" Foreground="White"/>
