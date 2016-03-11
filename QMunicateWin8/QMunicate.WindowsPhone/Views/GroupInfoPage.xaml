@@ -39,7 +39,7 @@
         </Grid.RowDefinitions>
         <StackPanel>
             <TextBlock Text="{Binding ChatName}" Margin="{StaticResource DefaultHorizontalMargin}" FontSize="{StaticResource NormalFontSize}"/>
-            <TextBlock Text="group info" Margin="{StaticResource DefaultMargin}" FontSize="{StaticResource ExtraLargeFontSize}"/>
+            <TextBlock Text="group info" FontWeight="Light" Style="{StaticResource BodyTextBlockStyle}" Margin="{StaticResource DefaultMargin}" FontSize="{StaticResource ExtraLargeFontSize}"/>
             <Image Source="{Binding ChatImage, TargetNullValue=../Assets/AvatarPlaceholder.png}" Height="90" Width="90" HorizontalAlignment="Left" Margin="{StaticResource DefaultMargin}"/>
         </StackPanel>
         <ScrollViewer Grid.Row="1">

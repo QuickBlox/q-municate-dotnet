@@ -47,7 +47,7 @@
         </Grid.RowDefinitions>
         <StackPanel>
             <TextBlock Text="Q-MUNICATE" Margin="{StaticResource DefaultHorizontalMargin}" FontSize="{StaticResource NormalFontSize}"/>
-            <TextBlock Text="chats" Margin="12 12 12 0" FontSize="{StaticResource ExtraLargeFontSize}"/>
+            <TextBlock Text="chats" FontWeight="Light" Margin="12 12 12 0" FontSize="{StaticResource ExtraLargeFontSize}"/>
         </StackPanel>
         <ScrollViewer Grid.Row="1">
             <ItemsControl ItemsSource="{Binding DialogsManager.Dialogs}" ItemTemplate="{StaticResource DialogTemplate}"/>

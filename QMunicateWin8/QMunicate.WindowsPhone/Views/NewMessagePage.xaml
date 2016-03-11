@@ -51,7 +51,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBox x:Name="SearchTextBox" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  PlaceholderText="Search" Margin="{StaticResource DefaultMargin}"/>
-        <HyperlinkButton Grid.Row="1" Content="create group" Command="{Binding CreateGroupCommand}"
+        <HyperlinkButton Grid.Row="1" Content="create group" FontWeight="Light" Command="{Binding CreateGroupCommand}"
                              FontSize="{StaticResource ExtraLargeFontSize}" Margin="{StaticResource DefaultMargin}" />
         
         <ListBox Grid.Row="2" ItemsSource="{Binding Contacts}" Background="Transparent" ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}"

@@ -15,8 +15,8 @@
     DataContext="{Binding SignUpViewModel, Source={StaticResource Locator}}">
     
     <Grid>
-        <StackPanel>
-            <TextBlock Text="Sign up" FontSize="{StaticResource ExtraLargeFontSize}" Margin="{StaticResource DefaultMargin}" />
+        <StackPanel Margin="6 0 6 0">
+            <TextBlock Text="Sign up" FontWeight="Light" Style="{StaticResource BodyTextBlockStyle}" FontSize="{StaticResource ExtraLargeFontSize}" Margin="{StaticResource DefaultMargin}" />
             <TextBox PlaceholderText="Full Name" Margin="{StaticResource DefaultMargin}" Text="{Binding FullName, Mode=TwoWay}" IsEnabled="{Binding IsLoading, Converter={StaticResource BooleanToNegationConverter}}" />
             <TextBox PlaceholderText="Email" Margin="{StaticResource DefaultMargin}" Text="{Binding Email,Mode=TwoWay}" IsEnabled="{Binding IsLoading, Converter={StaticResource BooleanToNegationConverter}}" />
             <PasswordBox PlaceholderText="Password" Margin="{StaticResource DefaultMargin}" Password="{Binding Password,Mode=TwoWay}" IsEnabled="{Binding IsLoading, Converter={StaticResource BooleanToNegationConverter}}" />

@@ -20,7 +20,7 @@
         <Button Content="sign up with email" Command="{Binding EmailSignUpCommand}" Margin="{StaticResource DefaultHorizontalMargin}"
                 Width="250"  HorizontalAlignment="Center"/>
         <HyperlinkButton Content="Already have an account?" Command="{Binding LoginCommand}" Foreground="Gray" FontWeight="SemiBold"
-                             FontSize="{StaticResource NormalFontSize}" Margin="0 55 0 0" HorizontalAlignment="Center" />
+                             FontSize="{StaticResource NormalFontSize}" Margin="0 80 0 0" HorizontalAlignment="Center" />
     </StackPanel>
 
     <interactivity:Interaction.Behaviors>
