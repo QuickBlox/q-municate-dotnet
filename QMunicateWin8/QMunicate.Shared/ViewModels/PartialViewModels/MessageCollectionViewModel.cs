@@ -282,8 +282,11 @@ namespace QMunicate.ViewModels.PartialViewModels
             {
                 messageViewModel.SenderName = senderUser.FullName;
 
-                var customData = JsonConvert.DeserializeObject<CustomData>(senderUser.CustomData);
-                messageViewModel.SenderImage = await ServiceLocator.Locator.Get<IImageService>().GetPublicImage(customData?.AvatarUrl);
+                if (senderUser.CustomData != null)
+                {
+                    var customData = JsonConvert.DeserializeObject<CustomData>(senderUser.CustomData);
+                    messageViewModel.SenderImage = await ServiceLocator.Locator.Get<IImageService>().GetPublicImage(customData?.AvatarUrl);
+                }
             }
 
             bool isImageAttached = message.Attachments != null && message.Attachments.Any() && !string.IsNullOrEmpty(message.Attachments[0].Id);
