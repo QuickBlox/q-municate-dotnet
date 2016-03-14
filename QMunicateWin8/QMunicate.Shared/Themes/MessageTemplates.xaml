@@ -65,7 +65,7 @@
                 <ColumnDefinition Width="8*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            <Image Source="{Binding SenderImage}" Height="40" Width="40" Margin="{StaticResource DefaultHorizontalMargin}" VerticalAlignment="Bottom"/>
+            <Image Source="{Binding SenderImage, TargetNullValue=../Assets/AvatarPlaceholder.png}" Height="40" Width="40" Margin="{StaticResource DefaultHorizontalMargin}" VerticalAlignment="Bottom"/>
             <Polygon Grid.Column="1" Points="12,0 12,12 0,12 12,0" Fill="{StaticResource IncomingMessageBrush}" VerticalAlignment="Bottom"
                                  Margin="0,24,0,0" />
             <Grid Grid.Column="2" Background="{StaticResource IncomingMessageBrush}">
@@ -134,7 +134,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image Source="{Binding SenderImage}" Height="40" Width="40" Margin="{StaticResource DefaultHorizontalMargin}" VerticalAlignment="Bottom"/>
+            <Image Source="{Binding SenderImage, TargetNullValue=../Assets/AvatarPlaceholder.png}" Height="40" Width="40" Margin="{StaticResource DefaultHorizontalMargin}" VerticalAlignment="Bottom"/>
             <Polygon Grid.Column="1" Points="12,0 12,12 0,12 12,0" Fill="{StaticResource IncomingMessageBrush}" VerticalAlignment="Bottom"
                                  Margin="0,24,0,0" />
             <Grid Grid.Column="2" Background="{StaticResource IncomingMessageBrush}">
