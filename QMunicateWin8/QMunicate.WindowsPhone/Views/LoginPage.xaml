@@ -15,7 +15,7 @@
     <Grid>
         <StackPanel Margin="6 0 6 0">
             <TextBlock Text="Login" FontWeight="Light" Style="{StaticResource BodyTextBlockStyle}" FontSize="{StaticResource ExtraLargeFontSize}" Margin="{StaticResource DefaultMargin}" />
-            <TextBox PlaceholderText="Email" Margin="{StaticResource DefaultMargin}" Text="{Binding Email, Mode=TwoWay}"
+            <TextBox PlaceholderText="Email" Margin="12 12 12 0" Text="{Binding Email, Mode=TwoWay}"
                      IsEnabled="{Binding IsLoading, Converter={StaticResource BooleanToNegationConverter}}" />
             <PasswordBox PlaceholderText="Password" Margin="{StaticResource DefaultMargin}" Password="{Binding Password, Mode=TwoWay}"
                          IsEnabled="{Binding IsLoading, Converter={StaticResource BooleanToNegationConverter}}" />

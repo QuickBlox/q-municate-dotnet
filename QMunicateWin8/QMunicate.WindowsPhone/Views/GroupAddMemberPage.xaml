@@ -176,9 +176,9 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image Source="{Binding ChatImage, TargetNullValue=../Assets/AvatarPlaceholder.png}" Height="70" Width="70" Margin="12 12 6 0"
+            <Image Source="{Binding ChatImage, TargetNullValue=../Assets/AvatarPlaceholder.png}" Height="70" Width="70" Margin="12 12 12 12"
                    tapListener:TapListener.TapCommand="{Binding ChangeImageCommand}"/>
-            <TextBox Grid.Column="1" VerticalAlignment="Bottom" Text="{Binding GroupName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  PlaceholderText="Group name" Margin="6 12 12 0"/>
+            <TextBox Grid.Column="1" VerticalAlignment="Bottom" Text="{Binding GroupName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  PlaceholderText="Group name" Margin="12 12 12 12"/>
         </Grid>
         <TextBox Grid.Row="2" x:Name="SearchTextBox" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  PlaceholderText="Search" Margin="{StaticResource DefaultMargin}"/>
         <ListBox Grid.Row="3" ItemsSource="{Binding UsersToAdd}" Background="Transparent" ItemContainerStyle="{StaticResource ListBoxItemContainerStyle}"

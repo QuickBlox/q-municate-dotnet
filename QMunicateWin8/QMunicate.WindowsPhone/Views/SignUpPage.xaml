@@ -17,9 +17,9 @@
     <Grid>
         <StackPanel Margin="6 0 6 0">
             <TextBlock Text="Sign up" FontWeight="Light" Style="{StaticResource BodyTextBlockStyle}" FontSize="{StaticResource ExtraLargeFontSize}" Margin="{StaticResource DefaultMargin}" />
-            <TextBox PlaceholderText="Full Name" Margin="{StaticResource DefaultMargin}" Text="{Binding FullName, Mode=TwoWay}" IsEnabled="{Binding IsLoading, Converter={StaticResource BooleanToNegationConverter}}" />
-            <TextBox PlaceholderText="Email" Margin="{StaticResource DefaultMargin}" Text="{Binding Email,Mode=TwoWay}" IsEnabled="{Binding IsLoading, Converter={StaticResource BooleanToNegationConverter}}" />
-            <PasswordBox PlaceholderText="Password" Margin="{StaticResource DefaultMargin}" Password="{Binding Password,Mode=TwoWay}" IsEnabled="{Binding IsLoading, Converter={StaticResource BooleanToNegationConverter}}" />
+            <TextBox PlaceholderText="Full Name" Margin="12 24 12 6" Text="{Binding FullName, Mode=TwoWay}" IsEnabled="{Binding IsLoading, Converter={StaticResource BooleanToNegationConverter}}" />
+            <TextBox PlaceholderText="Email" Margin="12 6 12 6" Text="{Binding Email,Mode=TwoWay}" IsEnabled="{Binding IsLoading, Converter={StaticResource BooleanToNegationConverter}}" />
+            <PasswordBox PlaceholderText="Password" Margin="12 6 12 24" Password="{Binding Password,Mode=TwoWay}" IsEnabled="{Binding IsLoading, Converter={StaticResource BooleanToNegationConverter}}" />
             <StackPanel Orientation="Horizontal">
                 <Image DoubleTapped="UIElement_OnDoubleTapped" Height="100" Width="100" Source="{Binding UserImage, TargetNullValue=../Assets/AvatarPlaceholder.png, FallbackValue=../Assets/AvatarPlaceholder.png}" Margin="{StaticResource DefaultMargin}" />
                 <Button Content="choose user picture" Margin="{StaticResource DefaultMargin}" Command="{Binding ChoosePhotoCommand}"/>
