@@ -199,15 +199,15 @@ namespace QMunicate.ViewModels
 
         private async void ChatManagerOnOnMessageReceived(object sender, Message message)
         {
-            await MessageCollectionViewModel.AddNewMessage(message);
-
-            if (message.NotificationType == NotificationTypes.GroupUpdate)
+            await Helpers.RunOnTheUiThread(async () =>
             {
-                CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+                await MessageCollectionViewModel.AddNewMessage(message);
+
+                if (message.NotificationType == NotificationTypes.GroupUpdate)
                 {
                     await UpdateGroupInfo(message);
-                });
-            }
+                }
+            });
         }
 
         private async Task UpdateGroupInfo(Message notificationMessage)
