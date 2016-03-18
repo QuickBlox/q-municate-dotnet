@@ -32,7 +32,11 @@
                           IsEnabled="{Binding IsLoading, Converter={StaticResource BooleanToNegationConverter}}"/>
             <HyperlinkButton Content="logout" Command="{Binding SignOutCommand}"  Margin="{StaticResource DefaultMargin}"/>
             <!--<HyperlinkButton Content="delete my account" Command="{Binding DeleteAccountCommand}"  Foreground="Red" Margin="12 0 12 12"/>-->
-            <HyperlinkButton Content="User Agreement" NavigateUri="http://q-municate.com/agreement/" FontSize="{StaticResource NormalFontSize}" Foreground="Blue" Margin="12 24 12 12"/>
+            <StackPanel Orientation="Horizontal" Margin="12 24 12 12">
+                <HyperlinkButton Content="User Agreement" NavigateUri="http://q-municate.com/agreement/" FontSize="{StaticResource NormalFontSize}" Foreground="Blue" Margin="0 0 6 0"/>
+                <TextBlock Text="and" FontSize="{StaticResource NormalFontSize}" VerticalAlignment="Center"/>
+                <HyperlinkButton Content="Privacy Policy" NavigateUri="http://quickblox.com/privacy/" FontSize="{StaticResource NormalFontSize}" Foreground="Blue" Margin="6 0 0 0"/>
+            </StackPanel>
             <TextBlock Text="{Binding PackageVersion, Converter={StaticResource StringFormatConverter}, ConverterParameter='Version: {0}'}" Margin="{StaticResource DefaultMargin}" FontSize="{StaticResource NormalFontSize}"/>
         </StackPanel>
     </Grid>

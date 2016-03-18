@@ -24,10 +24,11 @@
                 <Image DoubleTapped="UIElement_OnDoubleTapped" Height="100" Width="100" Source="{Binding UserImage, TargetNullValue=../Assets/AvatarPlaceholder.png, FallbackValue=../Assets/AvatarPlaceholder.png}" Margin="{StaticResource DefaultMargin}" />
                 <Button Content="choose user picture" Margin="{StaticResource DefaultMargin}" Command="{Binding ChoosePhotoCommand}"/>
             </StackPanel>
-            <TextBlock Text="By clicking Done, you agree" FontSize="{StaticResource SmallFontSize}" Margin="{StaticResource DefaultHorizontalMargin}"/>
+            <TextBlock Text="By clicking Done, you agree to Q-municate" FontSize="{StaticResource SmallFontSize}" Margin="{StaticResource DefaultHorizontalMargin}"/>
             <StackPanel Orientation="Horizontal" Margin="{StaticResource DefaultHorizontalMargin}">
-                <TextBlock Text="to Q-municate" FontSize="{StaticResource SmallFontSize}" VerticalAlignment="Center"/>
-                <HyperlinkButton Content="User Agreement" NavigateUri="http://q-municate.com/agreement/" FontSize="{StaticResource SmallFontSize}" Foreground="Blue" Margin="6 0 0 0"/>
+                <HyperlinkButton Content="User Agreement" NavigateUri="http://q-municate.com/agreement/" FontSize="{StaticResource SmallFontSize}" Foreground="Blue" Margin="0 0 6 0"/>
+                <TextBlock Text="and" FontSize="{StaticResource SmallFontSize}" VerticalAlignment="Center"/>
+                <HyperlinkButton Content="Privacy Policy" NavigateUri="http://quickblox.com/privacy/" FontSize="{StaticResource SmallFontSize}" Foreground="Blue" Margin="6 0 0 0"/>
             </StackPanel>
         </StackPanel>
     </Grid>
