@@ -58,6 +58,10 @@ namespace QMunicate.ViewModels
             {
                 NavigationService.BackStack.Clear();
 
+                var credentialsService = ServiceLocator.Locator.Get<ICredentialsService>();
+                credentialsService.CurrentUserId = parameter.CurrentUserId;
+                credentialsService.CurrentPassword = parameter.Password;
+
                 var previousSessionUserId = SettingsManager.Instance.ReadFromSettings<int>(SettingsKeys.CurrentUserId);
                 if (previousSessionUserId != parameter.CurrentUserId)
                 {
@@ -65,7 +69,6 @@ namespace QMunicate.ViewModels
                 }
 
                 SettingsManager.Instance.WriteToSettings(SettingsKeys.CurrentUserId, parameter.CurrentUserId);
-
                 await InitializeChat(parameter.CurrentUserId, parameter.Password);
             }
             await LoadDialogs();

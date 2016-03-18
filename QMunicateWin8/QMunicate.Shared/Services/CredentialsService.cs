@@ -8,6 +8,16 @@ namespace QMunicate.Services
 {
     public interface ICredentialsService
     {
+        /// <summary>
+        /// In memory place for current user ID. Is not persisted anywhere.
+        /// </summary>
+        int CurrentUserId { get; set; }
+
+        /// <summary>
+        /// In memory place for current user password. Is not persisted anywhere.
+        /// </summary>
+        string CurrentPassword { get; set; }
+
         Credentials GetSavedCredentials();
         void SaveCredentials(Credentials credentials);
         void DeleteSavedCredentials();
@@ -22,6 +32,16 @@ namespace QMunicate.Services
     public class CredentialsService : ICredentialsService
     {
         private const string PasswordVaultResourceName = "QMunicateCredentials";
+
+        /// <summary>
+        /// In memory place for current user ID. Is not persisted anywhere.
+        /// </summary>
+        public int CurrentUserId { get; set; }
+
+        /// <summary>
+        /// In memory place for current user password. Is not persisted anywhere.
+        /// </summary>
+        public string CurrentPassword { get; set; }
 
         public Credentials GetSavedCredentials()
         {
