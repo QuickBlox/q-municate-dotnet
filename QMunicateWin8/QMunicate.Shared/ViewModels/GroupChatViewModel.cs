@@ -131,6 +131,13 @@ namespace QMunicate.ViewModels
             IsLoading = true;
             using (var stream = (FileRandomAccessStream)await files[0].OpenAsync(FileAccessMode.Read))
             {
+                if (stream.Size > 1000000) // 1 MB. Sometimes it might crash with a bigger image
+                {
+                    await ServiceLocator.Locator.Get<IMessageService>().ShowAsync("Large image", "The image should be less than 1 Mb");
+                    IsLoading = false;
+                    return;
+                }
+
                 var newImageBytes = new byte[stream.Size];
                 using (var dataReader = new DataReader(stream))
                 {
