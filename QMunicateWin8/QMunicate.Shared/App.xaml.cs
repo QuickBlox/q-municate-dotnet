@@ -66,8 +66,9 @@ namespace QMunicate
 
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
+            this.Resuming += OnResuming;
         }
-
+        
         private async void OnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
         {
             unhandledExceptionEventArgs.Handled = true;
@@ -151,10 +152,6 @@ namespace QMunicate
             {
                 LifecycleHelper.FacebookAuthenticationReceived(protocolArgs);
             }
-            
-            //var quickbloxClient = ServiceLocator.Locator.Get<IQuickbloxClient>();
-            //var token = SettingsManager.Instance.ReadFromSettings<string>(SettingsKeys.QbToken);
-            //quickbloxClient.Resume(token);
 
 #if WINDOWS_PHONE_APP
 
@@ -184,7 +181,6 @@ namespace QMunicate
 
             navigationService.Navigate(ViewLocator.First);
         }
-
 
         private PageResolver GetPageResolver()
         {
@@ -245,6 +241,9 @@ namespace QMunicate
         {
             var deferral = e.SuspendingOperation.GetDeferral();
 
+            var quickbloxClient = ServiceLocator.Locator.Get<IQuickbloxClient>();
+            quickbloxClient?.ChatXmppClient.Disconnect();
+
             await QmunicateLoggerHolder.Log(QmunicateLogLevel.Debug, "===================== QMunicate. OnSuspending");
 
             // TODO: Save application state and stop any background activity
@@ -254,6 +253,24 @@ namespace QMunicate
 
             //var quickbloxClient = ServiceLocator.Locator.Get<IQuickbloxClient>();
             //SettingsManager.Instance.WriteToSettings(SettingsKeys.QbToken, quickbloxClient.Token);
+        }
+
+        private async void OnResuming(object sender, object o)
+        {
+            await ReInitChat();
+        }
+
+        private async Task ReInitChat()
+        {
+            var quickbloxClient = ServiceLocator.Locator.Get<IQuickbloxClient>();
+            var credentialsService = ServiceLocator.Locator.Get<ICredentialsService>();
+
+            if (quickbloxClient != null && !quickbloxClient.ChatXmppClient.IsConnected && credentialsService.CurrentUserId != default(int))
+            {
+                await quickbloxClient.ChatXmppClient.Connect(credentialsService.CurrentUserId, credentialsService.CurrentPassword);
+                quickbloxClient.ChatXmppClient.EnableMessageCarbons();
+                quickbloxClient.ChatXmppClient.ReloadContacts();
+            }
         }
     }
 }
